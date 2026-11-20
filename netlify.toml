@@ -1,0 +1,63 @@
+# Netlify configuration. Owner: netlify-engineer. Reviewers: build-pipeline-engineer, pyodide-engineer.
+# Static site only: Python runs in this build step and nowhere else (no functions, no redirects/proxies).
+
+[build]
+  # 1) NLTK + spaCy over the review sample -> site/data/*.json, copy nltk_data + analyzer for the browser
+  # 2) pinned, hash-checked Pyodide core (npm) + nltk wheel (PyPI) -> site/pyodide/
+  command = "python pipeline/build.py && python scripts/fetch_pyodide.py"
+  publish = "site"
+
+[build.environment]
+  PYTHON_VERSION = "3.12"
+  # Vendored NLTK data (committed); the build never calls nltk.download().
+  NLTK_DATA = "/opt/build/repo/nltk_data"
+  PIP_DISABLE_PIP_VERSION_CHECK = "1"
+
+# ---------------------------------------------------------------- headers
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Same-origin only. 'wasm-unsafe-eval' lets Pyodide compile WebAssembly; workers are same-origin modules.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; worker-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"
+
+# Versioned Pyodide runtime and wheels (path contains the version): cache for a year.
+[[headers]]
+  for = "/pyodide/:version/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Exactly one rule may set a given header for a path (overlapping rules can combine values).
+[[headers]]
+  for = "/pyodide/:version/*.wasm"
+  [headers.values]
+    Content-Type = "application/wasm"
+
+# Points at the current versioned directory: always revalidate.
+[[headers]]
+  for = "/pyodide/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Build output changes on every deploy: short cache.
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=300, must-revalidate"
+
+[[headers]]
+  for = "/nltk_data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/py/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
