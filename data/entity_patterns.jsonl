@@ -1,0 +1,58 @@
+{"label": "ORG", "pattern": "Starbucks", "id": "starbucks"}
+{"label": "ORG", "pattern": "McDonald's", "id": "mcdonalds"}
+{"label": "ORG", "pattern": "McDonald", "id": "mcdonalds"}
+{"label": "ORG", "pattern": "Costco", "id": "costco"}
+{"label": "ORG", "pattern": "Sam's", "id": "sams-club"}
+{"label": "ORG", "pattern": "Walmart", "id": "walmart"}
+{"label": "ORG", "pattern": "Toyota", "id": "toyota"}
+{"label": "ORG", "pattern": "Pepsi", "id": "pepsi"}
+{"label": "ORG", "pattern": "Applebee's", "id": "applebees"}
+{"label": "ORG", "pattern": "Kentucky Fried Chicken", "id": "kfc"}
+{"label": "ORG", "pattern": "CPK", "id": "cpk"}
+{"label": "ORG", "pattern": "PF Chang's", "id": "pf-changs"}
+{"label": "ORG", "pattern": "P.F. Chang's", "id": "pf-changs"}
+{"label": "ORG", "pattern": "Panera", "id": "panera"}
+{"label": "ORG", "pattern": "Denny's", "id": "dennys"}
+{"label": "ORG", "pattern": "Giant Eagle", "id": "giant-eagle"}
+{"label": "ORG", "pattern": "WF", "id": "whole-foods"}
+{"label": "ORG", "pattern": "Trader Joe's", "id": "trader-joes"}
+{"label": "ORG", "pattern": "LJS", "id": "long-john-silvers"}
+{"label": "ORG", "pattern": "Papa J's", "id": "papa-js"}
+{"label": "ORG", "pattern": "PaPa J's", "id": "papa-js"}
+{"label": "ORG", "pattern": "Papa Johns", "id": "papa-johns"}
+{"label": "ORG", "pattern": "Riley's Pour House", "id": "pour-house"}
+{"label": "ORG", "pattern": "Murphy's Pour House", "id": "pour-house"}
+{"label": "ORG", "pattern": "Sullivan's Pour House", "id": "pour-house"}
+{"label": "ORG", "pattern": "Pour House", "id": "pour-house"}
+{"label": "ORG", "pattern": "Bar Louie", "id": "bar-louie"}
+{"label": "ORG", "pattern": "Smoke Taqueria", "id": "smoke-taqueria"}
+{"label": "ORG", "pattern": "East End Food Co-op", "id": "east-end-food-coop"}
+{"label": "ORG", "pattern": "Tazza D'oro", "id": "tazza-doro"}
+{"label": "ORG", "pattern": "La Prima", "id": "la-prima"}
+{"label": "ORG", "pattern": "Spak Brothers", "id": "spak-brothers"}
+{"label": "ORG", "pattern": "The Milkshake Factory", "id": "milkshake-factory"}
+{"label": "ORG", "pattern": "Milkshake Factory", "id": "milkshake-factory"}
+{"label": "ORG", "pattern": "The Park House", "id": "park-house"}
+{"label": "ORG", "pattern": "Park House", "id": "park-house"}
+{"label": "ORG", "pattern": "Point Brugge Cafe", "id": "point-brugge"}
+{"label": "ORG", "pattern": "Point Brugge", "id": "point-brugge"}
+{"label": "ORG", "pattern": "Barb's Country Junction", "id": "barbs-country-junction"}
+{"label": "ORG", "pattern": "Big Burrito", "id": "big-burrito"}
+{"label": "ORG", "pattern": "Izzazu", "id": "izzazu"}
+{"label": "ORG", "pattern": "Flynn's", "id": "flynns"}
+{"label": "ORG", "pattern": "Rocky's", "id": "rockys"}
+{"label": "ORG", "pattern": "Miller's", "id": "millers"}
+{"label": "ORG", "pattern": "China Palace", "id": "china-palace"}
+{"label": "ORG", "pattern": "Google", "id": "google"}
+{"label": "ORG", "pattern": "Yelp", "id": "yelp"}
+{"label": "ORG", "pattern": "Carnegie Museum of Art", "id": "carnegie-museum"}
+{"label": "ORG", "pattern": "Carnegie Museum", "id": "carnegie-museum"}
+{"label": "PRODUCT", "pattern": "Big Mac", "id": "big-mac"}
+{"label": "PRODUCT", "pattern": "Coors Light", "id": "coors-light"}
+{"label": "PRODUCT", "pattern": "Coors", "id": "coors"}
+{"label": "PRODUCT", "pattern": "Guinness", "id": "guinness"}
+{"label": "PRODUCT", "pattern": "Fruit Ninja", "id": "fruit-ninja"}
+{"label": "PRODUCT", "pattern": "Gobbler Club", "id": "gobbler-club"}
+{"label": "PRODUCT", "pattern": "Yoshida Sauce", "id": "yoshida-sauce"}
+{"label": "PRODUCT", "pattern": "Google Offer", "id": "google-offer"}
+{"label": "PRODUCT", "pattern": [{"TEXT": {"REGEX": "^[A-Z]{1,4}-?\\d{2,5}(?:[A-Z]{1,3}\\d{0,2})?$"}}], "id": "model-number"}
