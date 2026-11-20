@@ -1,0 +1,13 @@
+{
+  "name": "customer-review-analyzer-tests",
+  "private": true,
+  "description": "Browser tests only. The site itself has no npm build step.",
+  "scripts": {
+    "test:pyodide": "node --test \"tests/pyodide/*.test.mjs\"",
+    "test:e2e": "node --test --test-concurrency=1 \"tests/e2e/*.test.cjs\"",
+    "test:e2e:netlify-headers": "E2E_SERVER=netlify node --test --test-concurrency=1 \"tests/e2e/*.test.cjs\""
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}

@@ -1,0 +1,254 @@
+[
+ {
+  "n_chars": 46,
+  "n_sentences": 2,
+  "n_tokens": 9,
+  "sentiment": {
+   "compound": 0.456,
+   "pos": 0.318,
+   "neu": 0.507,
+   "neg": 0.174,
+   "label": "positive"
+  },
+  "sentences": [
+   {
+    "index": 0,
+    "text": "The pizza was great.",
+    "compound": 0.625,
+    "pos": 0.577,
+    "neu": 0.423,
+    "neg": 0.0,
+    "label": "positive"
+   },
+   {
+    "index": 1,
+    "text": "The service was not good!",
+    "compound": -0.402,
+    "pos": 0.0,
+    "neu": 0.597,
+    "neg": 0.403,
+    "label": "negative"
+   }
+  ],
+  "top_words": [
+   {
+    "word": "good",
+    "count": 1
+   },
+   {
+    "word": "great",
+    "count": 1
+   },
+   {
+    "word": "pizza",
+    "count": 1
+   },
+   {
+    "word": "service",
+    "count": 1
+   }
+  ],
+  "key_phrases": [
+   {
+    "phrase": "not good",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "n_chars": 53,
+  "n_sentences": 2,
+  "n_tokens": 11,
+  "sentiment": {
+   "compound": 0.276,
+   "pos": 0.209,
+   "neu": 0.791,
+   "neg": 0.0,
+   "label": "positive"
+  },
+  "sentences": [
+   {
+    "index": 0,
+    "text": "I can't believe how bland the pasta was.",
+    "compound": 0.276,
+    "pos": 0.26,
+    "neu": 0.74,
+    "neg": 0.0,
+    "label": "positive"
+   },
+   {
+    "index": 1,
+    "text": "Never again.",
+    "compound": 0.0,
+    "pos": 0.0,
+    "neu": 1.0,
+    "neg": 0.0,
+    "label": "neutral"
+   }
+  ],
+  "top_words": [
+   {
+    "word": "believe",
+    "count": 1
+   },
+   {
+    "word": "bland",
+    "count": 1
+   },
+   {
+    "word": "pasta",
+    "count": 1
+   }
+  ],
+  "key_phrases": [
+   {
+    "phrase": "not believe",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "n_chars": 66,
+  "n_sentences": 2,
+  "n_tokens": 12,
+  "sentiment": {
+   "compound": 0.874,
+   "pos": 0.472,
+   "neu": 0.528,
+   "neg": 0.0,
+   "label": "positive"
+  },
+  "sentences": [
+   {
+    "index": 0,
+    "text": "Absolutely loved it!",
+    "compound": 0.669,
+    "pos": 0.692,
+    "neu": 0.308,
+    "neg": 0.0,
+    "label": "positive"
+   },
+   {
+    "index": 1,
+    "text": "Best tacos in town and the service was quick.",
+    "compound": 0.637,
+    "pos": 0.344,
+    "neu": 0.656,
+    "neg": 0.0,
+    "label": "positive"
+   }
+  ],
+  "top_words": [
+   {
+    "word": "absolutely",
+    "count": 1
+   },
+   {
+    "word": "best",
+    "count": 1
+   },
+   {
+    "word": "loved",
+    "count": 1
+   },
+   {
+    "word": "quick",
+    "count": 1
+   },
+   {
+    "word": "service",
+    "count": 1
+   },
+   {
+    "word": "tacos",
+    "count": 1
+   },
+   {
+    "word": "town",
+    "count": 1
+   }
+  ],
+  "key_phrases": [
+   {
+    "phrase": "absolutely loved",
+    "count": 1
+   },
+   {
+    "phrase": "best tacos",
+    "count": 1
+   }
+  ]
+ },
+ {
+  "n_chars": 70,
+  "n_sentences": 2,
+  "n_tokens": 14,
+  "sentiment": {
+   "compound": -0.718,
+   "pos": 0.215,
+   "neu": 0.395,
+   "neg": 0.39,
+   "label": "negative"
+  },
+  "sentences": [
+   {
+    "index": 0,
+    "text": "The burger was good but not great.",
+    "compound": -0.541,
+    "pos": 0.171,
+    "neu": 0.439,
+    "neg": 0.39,
+    "label": "negative"
+   },
+   {
+    "index": 1,
+    "text": "Prices are fair, parking is a pain.",
+    "compound": -0.25,
+    "pos": 0.24,
+    "neu": 0.417,
+    "neg": 0.344,
+    "label": "negative"
+   }
+  ],
+  "top_words": [
+   {
+    "word": "burger",
+    "count": 1
+   },
+   {
+    "word": "fair",
+    "count": 1
+   },
+   {
+    "word": "good",
+    "count": 1
+   },
+   {
+    "word": "great",
+    "count": 1
+   },
+   {
+    "word": "pain",
+    "count": 1
+   },
+   {
+    "word": "parking",
+    "count": 1
+   },
+   {
+    "word": "prices",
+    "count": 1
+   }
+  ],
+  "key_phrases": [
+   {
+    "phrase": "fair parking",
+    "count": 1
+   },
+   {
+    "phrase": "not great",
+    "count": 1
+   }
+  ]
+ }
+]

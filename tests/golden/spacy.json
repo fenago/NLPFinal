@@ -1,0 +1,158 @@
+[
+ {
+  "entities": [
+   {
+    "text": "Sony",
+    "label": "ORG",
+    "group": "brands",
+    "start": 13,
+    "end": 17,
+    "source": "ner"
+   },
+   {
+    "text": "WH-1000XM5",
+    "label": "PRODUCT",
+    "group": "products",
+    "start": 18,
+    "end": 28,
+    "source": "ruler"
+   },
+   {
+    "text": "Best Buy",
+    "label": "FAC",
+    "group": "places",
+    "start": 43,
+    "end": 51,
+    "source": "ner"
+   },
+   {
+    "text": "Chicago",
+    "label": "GPE",
+    "group": "places",
+    "start": 55,
+    "end": 62,
+    "source": "ner"
+   }
+  ],
+  "aspects": [
+   {
+    "aspect": "battery life",
+    "opinion": "great",
+    "negated": true,
+    "rule": "acomp",
+    "compound": -0.51,
+    "label": "negative",
+    "sentence_index": 1
+   }
+  ],
+  "masked_sentiment": {
+   "compound": -0.51,
+   "pos": 0.0,
+   "neu": 0.81,
+   "neg": 0.19,
+   "label": "negative"
+  }
+ },
+ {
+  "entities": [
+   {
+    "text": "Marco",
+    "label": "PERSON",
+    "group": "people",
+    "start": 13,
+    "end": 18,
+    "source": "ner"
+   },
+   {
+    "text": "Pittsburgh",
+    "label": "GPE",
+    "group": "places",
+    "start": 43,
+    "end": 53,
+    "source": "ner"
+   }
+  ],
+  "aspects": [
+   {
+    "aspect": "latte",
+    "opinion": "best",
+    "negated": false,
+    "rule": "amod",
+    "compound": 0.637,
+    "label": "positive",
+    "sentence_index": 0
+   },
+   {
+    "aspect": "music",
+    "opinion": "too loud",
+    "negated": false,
+    "rule": "acomp",
+    "compound": 0.0,
+    "label": "neutral",
+    "sentence_index": 1
+   },
+   {
+    "aspect": "pastry",
+    "opinion": "stale",
+    "negated": false,
+    "rule": "acomp",
+    "compound": -0.361,
+    "label": "negative",
+    "sentence_index": 1
+   }
+  ],
+  "masked_sentiment": {
+   "compound": 0.402,
+   "pos": 0.177,
+   "neu": 0.717,
+   "neg": 0.105,
+   "label": "positive"
+  }
+ },
+ {
+  "entities": [
+   {
+    "text": "Big Mac",
+    "label": "PRODUCT",
+    "group": "products",
+    "start": 11,
+    "end": 18,
+    "source": "ruler"
+   },
+   {
+    "text": "McDonald's",
+    "label": "ORG",
+    "group": "brands",
+    "start": 22,
+    "end": 32,
+    "source": "ruler"
+   },
+   {
+    "text": "Papa J's",
+    "label": "ORG",
+    "group": "brands",
+    "start": 66,
+    "end": 74,
+    "source": "ruler"
+   }
+  ],
+  "aspects": [
+   {
+    "aspect": "fish sandwich",
+    "opinion": "delicious",
+    "negated": false,
+    "rule": "amod",
+    "compound": 0.572,
+    "label": "positive",
+    "sentence_index": 0
+   }
+  ],
+  "masked_sentiment": {
+   "compound": 0.572,
+   "pos": 0.252,
+   "neu": 0.748,
+   "neg": 0.0,
+   "label": "positive"
+  }
+ }
+]

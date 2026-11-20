@@ -1,0 +1,52 @@
+[
+ {
+  "phrase": "fish sandwich",
+  "count": 14,
+  "score": 162.73
+ },
+ {
+  "phrase": "da burgh",
+  "count": 7,
+  "score": 118.133
+ },
+ {
+  "phrase": "emmert dental",
+  "count": 6,
+  "score": 102.122
+ },
+ {
+  "phrase": "saturday night",
+  "count": 8,
+  "score": 91.893
+ },
+ {
+  "phrase": "dining room",
+  "count": 7,
+  "score": 87.912
+ },
+ {
+  "phrase": "quiet storm",
+  "count": 4,
+  "score": 78.963
+ },
+ {
+  "phrase": "first time",
+  "count": 10,
+  "score": 77.458
+ },
+ {
+  "phrase": "pour house",
+  "count": 5,
+  "score": 75.202
+ },
+ {
+  "phrase": "bone graft",
+  "count": 4,
+  "score": 71.325
+ },
+ {
+  "phrase": "customer service",
+  "count": 6,
+  "score": 66.891
+ }
+]
