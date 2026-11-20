@@ -1,0 +1,391 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://customer-review-analyzer.local/schemas/examples.schema.json",
+  "title": "examples.json",
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "examples": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "is_demo": {
+            "type": "boolean"
+          },
+          "stars": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "nltk": {
+            "$ref": "#/$defs/nltk"
+          },
+          "spacy": {
+            "$ref": "#/$defs/spacy_full"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "is_demo",
+          "stars",
+          "text",
+          "nltk",
+          "spacy"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "contract_version",
+    "examples"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "nltk": {
+      "type": "object",
+      "properties": {
+        "n_chars": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "n_sentences": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "n_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sentiment": {
+          "$ref": "#/$defs/sentiment"
+        },
+        "sentences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "text": {
+                "type": "string"
+              },
+              "compound": {
+                "type": "number",
+                "minimum": -1,
+                "maximum": 1
+              },
+              "pos": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "neu": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "neg": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "label": {
+                "enum": [
+                  "negative",
+                  "neutral",
+                  "positive"
+                ]
+              }
+            },
+            "required": [
+              "index",
+              "text",
+              "compound",
+              "pos",
+              "neu",
+              "neg",
+              "label"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "top_words": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "$ref": "#/$defs/wordcount"
+          }
+        },
+        "key_phrases": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "type": "object",
+            "properties": {
+              "phrase": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "phrase",
+              "count"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "n_chars",
+        "n_sentences",
+        "n_tokens",
+        "sentiment",
+        "sentences",
+        "top_words",
+        "key_phrases"
+      ],
+      "additionalProperties": false
+    },
+    "sentiment": {
+      "type": "object",
+      "properties": {
+        "compound": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1
+        },
+        "pos": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "neu": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "neg": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "label": {
+          "enum": [
+            "negative",
+            "neutral",
+            "positive"
+          ]
+        }
+      },
+      "required": [
+        "compound",
+        "pos",
+        "neu",
+        "neg",
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "wordcount": {
+      "type": "object",
+      "properties": {
+        "word": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "word",
+        "count"
+      ],
+      "additionalProperties": false
+    },
+    "spacy_full": {
+      "type": "object",
+      "properties": {
+        "entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/entity"
+          }
+        },
+        "aspects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/aspect"
+          }
+        },
+        "masked_sentiment": {
+          "$ref": "#/$defs/sentiment"
+        },
+        "noun_chunks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tokens": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/token"
+          }
+        }
+      },
+      "required": [
+        "entities",
+        "aspects",
+        "masked_sentiment",
+        "noun_chunks",
+        "tokens"
+      ],
+      "additionalProperties": false
+    },
+    "entity": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "group": {
+          "enum": [
+            "people",
+            "places",
+            "brands",
+            "products",
+            null
+          ]
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "enum": [
+            "ner",
+            "ruler"
+          ]
+        }
+      },
+      "required": [
+        "text",
+        "label",
+        "group",
+        "start",
+        "end",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "aspect": {
+      "type": "object",
+      "properties": {
+        "aspect": {
+          "type": "string"
+        },
+        "opinion": {
+          "type": "string"
+        },
+        "negated": {
+          "type": "boolean"
+        },
+        "rule": {
+          "enum": [
+            "amod",
+            "acomp"
+          ]
+        },
+        "compound": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1
+        },
+        "label": {
+          "enum": [
+            "negative",
+            "neutral",
+            "positive"
+          ]
+        },
+        "sentence_index": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "aspect",
+        "opinion",
+        "negated",
+        "rule",
+        "compound",
+        "label",
+        "sentence_index"
+      ],
+      "additionalProperties": false
+    },
+    "token": {
+      "type": "object",
+      "properties": {
+        "i": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "text": {
+          "type": "string"
+        },
+        "lemma": {
+          "type": "string"
+        },
+        "pos": {
+          "type": "string"
+        },
+        "dep": {
+          "type": "string"
+        },
+        "head": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "i",
+        "text",
+        "lemma",
+        "pos",
+        "dep",
+        "head"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

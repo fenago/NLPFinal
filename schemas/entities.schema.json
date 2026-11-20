@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://customer-review-analyzer.local/schemas/entities.schema.json",
+  "title": "entities.json",
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "groups": {
+      "type": "object",
+      "properties": {
+        "people": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "n_reviews": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "review_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "sources": {
+                "type": "object",
+                "properties": {
+                  "ner": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "ruler": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "ner",
+                  "ruler"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "text",
+              "count",
+              "n_reviews",
+              "review_ids",
+              "sources"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "places": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "n_reviews": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "review_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "sources": {
+                "type": "object",
+                "properties": {
+                  "ner": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "ruler": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "ner",
+                  "ruler"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "text",
+              "count",
+              "n_reviews",
+              "review_ids",
+              "sources"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "brands": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "n_reviews": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "review_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "sources": {
+                "type": "object",
+                "properties": {
+                  "ner": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "ruler": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "ner",
+                  "ruler"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "text",
+              "count",
+              "n_reviews",
+              "review_ids",
+              "sources"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "n_reviews": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "review_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "sources": {
+                "type": "object",
+                "properties": {
+                  "ner": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "ruler": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "required": [
+                  "ner",
+                  "ruler"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "text",
+              "count",
+              "n_reviews",
+              "review_ids",
+              "sources"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "people",
+        "places",
+        "brands",
+        "products"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "contract_version",
+    "groups"
+  ],
+  "additionalProperties": false,
+  "$defs": {}
+}

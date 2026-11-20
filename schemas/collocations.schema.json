@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://customer-review-analyzer.local/schemas/collocations.schema.json",
+  "title": "collocations.json",
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "top_words": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/wordcount"
+      }
+    },
+    "bigrams": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "phrase": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "score": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "phrase",
+          "count",
+          "score"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "measure": {
+      "const": "likelihood_ratio"
+    },
+    "min_freq": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "required": [
+    "contract_version",
+    "top_words",
+    "bigrams",
+    "measure",
+    "min_freq"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "wordcount": {
+      "type": "object",
+      "properties": {
+        "word": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "word",
+        "count"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://customer-review-analyzer.local/schemas/meta.schema.json",
+  "title": "meta.json",
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "dataset": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        },
+        "n_reviews": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "license_note": {
+          "type": "string"
+        },
+        "citation": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "source",
+        "mode",
+        "n_reviews",
+        "license_note",
+        "citation"
+      ],
+      "additionalProperties": false
+    },
+    "versions": {
+      "type": "object",
+      "properties": {
+        "python": {
+          "type": "string"
+        },
+        "nltk": {
+          "type": "string"
+        },
+        "spacy": {
+          "type": "string"
+        },
+        "en_core_web_sm": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "python",
+        "nltk",
+        "spacy",
+        "en_core_web_sm"
+      ],
+      "additionalProperties": false
+    },
+    "sentiment_thresholds": {
+      "type": "object",
+      "properties": {
+        "positive": {
+          "type": "number"
+        },
+        "negative": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "positive",
+        "negative"
+      ],
+      "additionalProperties": false
+    },
+    "entity_groups": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "commit": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "contract_version",
+    "dataset",
+    "versions",
+    "sentiment_thresholds",
+    "entity_groups",
+    "commit"
+  ],
+  "additionalProperties": false,
+  "$defs": {}
+}

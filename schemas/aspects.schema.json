@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://customer-review-analyzer.local/schemas/aspects.schema.json",
+  "title": "aspects.json",
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "aspects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "aspect": {
+            "type": "string"
+          },
+          "mentions": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "mean_compound": {
+            "type": "number",
+            "minimum": -1,
+            "maximum": 1
+          },
+          "positive": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "neutral": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "negative": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "top_opinions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/wordcount"
+            }
+          },
+          "review_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "aspect",
+          "mentions",
+          "mean_compound",
+          "positive",
+          "neutral",
+          "negative",
+          "top_opinions",
+          "review_ids"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "contract_version",
+    "aspects"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "wordcount": {
+      "type": "object",
+      "properties": {
+        "word": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "word",
+        "count"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

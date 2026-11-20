@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://customer-review-analyzer.local/schemas/nltk_analysis.schema.json",
+  "title": "NltkAnalysis: output of nltk_analyzer.analyze() (build and Pyodide)",
+  "$ref": "#/$defs/nltk",
+  "$defs": {
+    "nltk": {
+      "type": "object",
+      "properties": {
+        "n_chars": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "n_sentences": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "n_tokens": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sentiment": {
+          "$ref": "#/$defs/sentiment"
+        },
+        "sentences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "text": {
+                "type": "string"
+              },
+              "compound": {
+                "type": "number",
+                "minimum": -1,
+                "maximum": 1
+              },
+              "pos": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "neu": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "neg": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "label": {
+                "enum": [
+                  "negative",
+                  "neutral",
+                  "positive"
+                ]
+              }
+            },
+            "required": [
+              "index",
+              "text",
+              "compound",
+              "pos",
+              "neu",
+              "neg",
+              "label"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "top_words": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "$ref": "#/$defs/wordcount"
+          }
+        },
+        "key_phrases": {
+          "type": "array",
+          "maxItems": 10,
+          "items": {
+            "type": "object",
+            "properties": {
+              "phrase": {
+                "type": "string"
+              },
+              "count": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "phrase",
+              "count"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "n_chars",
+        "n_sentences",
+        "n_tokens",
+        "sentiment",
+        "sentences",
+        "top_words",
+        "key_phrases"
+      ],
+      "additionalProperties": false
+    },
+    "sentiment": {
+      "type": "object",
+      "properties": {
+        "compound": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1
+        },
+        "pos": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "neu": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "neg": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "label": {
+          "enum": [
+            "negative",
+            "neutral",
+            "positive"
+          ]
+        }
+      },
+      "required": [
+        "compound",
+        "pos",
+        "neu",
+        "neg",
+        "label"
+      ],
+      "additionalProperties": false
+    },
+    "wordcount": {
+      "type": "object",
+      "properties": {
+        "word": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "word",
+        "count"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

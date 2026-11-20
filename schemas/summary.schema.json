@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://customer-review-analyzer.local/schemas/summary.schema.json",
+  "title": "summary.json",
+  "type": "object",
+  "properties": {
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "n_reviews": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "stars_counts": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ]
+      },
+      "required": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "sentiment_counts": {
+      "type": "object",
+      "properties": {
+        "negative": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "neutral": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "positive": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "negative",
+        "neutral",
+        "positive"
+      ],
+      "additionalProperties": false
+    },
+    "mean_compound_by_stars": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+        ]
+      },
+      "required": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "additionalProperties": {
+        "type": [
+          "number",
+          "null"
+        ]
+      }
+    },
+    "vader_vs_stars": {
+      "type": "object",
+      "properties": {
+        "stars": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 5,
+          "maxItems": 5
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "negative",
+              "neutral",
+              "positive"
+            ]
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "counts": {
+          "type": "array",
+          "minItems": 5,
+          "maxItems": 5,
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "minItems": 3,
+            "maxItems": 3
+          }
+        }
+      },
+      "required": [
+        "stars",
+        "labels",
+        "counts"
+      ],
+      "additionalProperties": false
+    },
+    "compound_histogram": {
+      "type": "object",
+      "properties": {
+        "bin_edges": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 11,
+          "maxItems": 11
+        },
+        "counts": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "minItems": 10,
+          "maxItems": 10
+        }
+      },
+      "required": [
+        "bin_edges",
+        "counts"
+      ],
+      "additionalProperties": false
+    },
+    "accuracy_vs_stars": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "required": [
+    "contract_version",
+    "n_reviews",
+    "stars_counts",
+    "sentiment_counts",
+    "mean_compound_by_stars",
+    "vader_vs_stars",
+    "compound_histogram",
+    "accuracy_vs_stars"
+  ],
+  "additionalProperties": false,
+  "$defs": {}
+}
