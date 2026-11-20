@@ -111,39 +111,46 @@ Notes:
 ## 4. Pyodide front‑end sketch (Web Worker)
 
 ```js
-// worker.js
-importScripts("https://cdn.jsdelivr.net/pyodide/v314.0.8/full/pyodide.js");
+// site/worker.mjs — must be a MODULE worker: Pyodide 314.x ships pyodide.asm.mjs as an
+// ES module and classic importScripts() workers are not supported (see
+// knowledge/pyodide-engineer/03-web-worker.md). Start it with:
+//   new Worker("/worker.mjs", { type: "module" })
+import { loadPyodide } from "/pyodide/pyodide.mjs";   // self-hosted subset, pinned 314.0.8
+
 let py;
 async function init() {
-  py = await loadPyodide();
+  py = await loadPyodide({ indexURL: "/pyodide/" });
   await py.loadPackage("nltk");
-  // copy lexicons shipped with the site into Pyodide's virtual FS
   for (const f of ["sentiment/vader_lexicon.zip", "corpora/stopwords.zip",
                    "tokenizers/punkt_tab.zip"]) {
     const buf = new Uint8Array(await (await fetch(`/nltk_data/${f}`)).arrayBuffer());
     py.FS.mkdirTree("/nltk_data/" + f.split("/")[0]);
     py.FS.writeFile("/nltk_data/" + f, buf);
   }
+  // shared analyzer module, same file the Netlify build uses
+  py.FS.writeFile("/home/pyodide/nltk_analyzer.py",
+                  await (await fetch("/py/nltk_analyzer.py")).text());
   await py.runPythonAsync(`
-import nltk; nltk.data.path.insert(0, "/nltk_data")
-from nltk.sentiment import SentimentIntensityAnalyzer
-sia = SentimentIntensityAnalyzer()`);
+import nltk, json; nltk.data.path.insert(0, "/nltk_data")
+import nltk_analyzer`);
 }
 const ready = init();
-onmessage = async (e) => {
-  await ready;
-  py.globals.set("review", e.data);
-  const out = await py.runPythonAsync(`
-import json
-json.dumps({"doc": sia.polarity_scores(review),
-            "sentences": [[s, sia.polarity_scores(s)["compound"]] for s in nltk.sent_tokenize(review)]})`);
-  postMessage(JSON.parse(out));
+self.onmessage = async ({ data: { id, text } }) => {
+  try {
+    await ready;
+    py.globals.set("review", text);          // pass text as data, never inside the code string
+    const out = await py.runPythonAsync("json.dumps(nltk_analyzer.analyze(review))");
+    self.postMessage({ id, ok: true, data: JSON.parse(out) });  // JSON string, not a PyProxy/Map
+  } catch (e) {
+    self.postMessage({ id, ok: false, error: String(e) });
+  }
 };
 ```
 
 - Check the exact `.zip` vs unzipped layout NLTK expects (`nltk.data.find`) when wiring this; unzipped folders also work.
 - First load downloads Pyodide (~10 MB+) — show a loading state and run it in a Worker so the UI stays responsive.
-- Pin the Pyodide version; verify the URL against https://pyodide.org/en/stable/usage/downloading-and-deploying.html (CDN path format changed with the 314.x versioning). Self‑hosting the Pyodide distribution inside `site/` is also allowed and removes the CDN dependency.
+- Pin the Pyodide version (314.0.8). Because everything must run on Netlify, **self-host only the files we need** (core runtime + the nltk wheel and its dependencies) under `site/pyodide/` — the full distribution is 200 MB+. Netlify warns that files over 10 MB may fail to upload; check the size of `pyodide.asm.wasm` early (knowledge/netlify-engineer/07-build-limits.md).
+- Python dicts cross into JS as Map/PyProxy objects — return `json.dumps(...)` strings instead.
 
 ## 5. Risks & mitigations
 

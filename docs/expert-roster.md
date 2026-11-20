@@ -46,7 +46,7 @@ The roles below cover only what that stack needs. See [What we deliberately do n
 | `pipeline/build.py`, `requirements.txt` | BUILD | NET, QA |
 | `site/data/*.json` contract (`docs/data-contract.md`) | ORC (approves) / BUILD (writes) | UI, VIZ, PYO |
 | `nltk_data/` (vendored) | NLTK | BUILD, PYO |
-| `site/worker.js`, `site/pyodide/` | PYO | NET, QA |
+| `site/worker.mjs`, `site/pyodide/` | PYO | NET, QA |
 | `site/index.html`, `site/*.css`, `site/app.js` | UI | VIZ, QA |
 | `site/charts.js` | VIZ | UI |
 | `netlify.toml` | NET | BUILD, PYO |
