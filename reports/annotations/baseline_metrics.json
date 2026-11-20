@@ -1,0 +1,206 @@
+{
+ "vader_raw": {
+  "accuracy": 0.6040609137055838,
+  "macro_f1": 0.425531914893617,
+  "per_class": {
+   "negative": {
+    "precision": 0.8775510204081632,
+    "recall": 0.4673913043478261,
+    "f1": 0.6099290780141844,
+    "support": 92
+   },
+   "neutral": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "support": 25
+   },
+   "positive": {
+    "precision": 0.5135135135135135,
+    "recall": 0.95,
+    "f1": 0.6666666666666667,
+    "support": 80
+   }
+  },
+  "confusion": [
+   [
+    43,
+    0,
+    49
+   ],
+   [
+    2,
+    0,
+    23
+   ],
+   [
+    4,
+    0,
+    76
+   ]
+  ]
+ },
+ "vader_masked": {
+  "accuracy": 0.6040609137055838,
+  "macro_f1": 0.425531914893617,
+  "per_class": {
+   "negative": {
+    "precision": 0.8775510204081632,
+    "recall": 0.4673913043478261,
+    "f1": 0.6099290780141844,
+    "support": 92
+   },
+   "neutral": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "support": 25
+   },
+   "positive": {
+    "precision": 0.5135135135135135,
+    "recall": 0.95,
+    "f1": 0.6666666666666667,
+    "support": 80
+   }
+  },
+  "confusion": [
+   [
+    43,
+    0,
+    49
+   ],
+   [
+    2,
+    0,
+    23
+   ],
+   [
+    4,
+    0,
+    76
+   ]
+  ]
+ },
+ "masked_changed": [],
+ "binary_raw_acc": 0.6918604651162791,
+ "binary_n": 172,
+ "threshold_sweep": {
+  "0.05": [
+   0.6040609137055838,
+   0.425531914893617
+  ],
+  "0.3": [
+   0.5989847715736041,
+   0.42853491789662
+  ],
+  "0.5": [
+   0.5939086294416244,
+   0.43383928768697116
+  ],
+  "0.7": [
+   0.5786802030456852,
+   0.4598753492370513
+  ]
+ },
+ "top_misses": [
+  [
+   0.994,
+   "yelp-train-031",
+   2,
+   0.994,
+   "Two meals, on the recommendation of a friend who lives near the place, and after the second trip, I was compelled to write. 'Rocky' would definitely describe th"
+  ],
+  [
+   0.993,
+   "yelp-test-022",
+   2,
+   0.993,
+   "I really don't know why I bother with chain restaurants anymore.  Now that my palate has matured and I no longer think chicken fingers and french fries are gour"
+  ],
+  [
+   0.992,
+   "yelp-test-078",
+   2,
+   0.992,
+   "Its okay, but it was just ok.  There's a $4 per person corking fee which caught us off guard.  We were expecting that would be for the table.  We started with t"
+  ],
+  [
+   0.985,
+   "yelp-test-069",
+   2,
+   0.985,
+   "The art museum is pretty nice; the carriage and car museum is cool; and it's neat to walk through the greenhouse.  Those are free.  However, nothing really sepa"
+  ],
+  [
+   0.982,
+   "yelp-train-044",
+   2,
+   0.982,
+   "My first time going to Barb's Country Junction and I really wanted to like this place, I really did...however, I didn't.  The food was decent, some was above av"
+  ],
+  [
+   0.971,
+   "yelp-train-091",
+   1,
+   0.971,
+   "We stopped at Papa J's last Friday night (8/1) for a round of drinks. There were 7 of us altogether and we had eaten at another restaurant earlier in the evenin"
+  ]
+ ],
+ "entities_with_ruler": {
+  "n": 68,
+  "precision": 0.6470588235294118,
+  "correct": 44,
+  "by_group": {
+   "brands": {
+    "n": 28,
+    "correct": 19,
+    "precision": 0.6785714285714286
+   },
+   "people": {
+    "n": 20,
+    "correct": 9,
+    "precision": 0.45
+   },
+   "places": {
+    "n": 20,
+    "correct": 16,
+    "precision": 0.8
+   }
+  },
+  "pooled_recall": 0.9777777777777777
+ },
+ "entities_without_ruler": {
+  "n": 67,
+  "precision": 0.6268656716417911,
+  "correct": 42,
+  "by_group": {
+   "brands": {
+    "n": 26,
+    "correct": 17,
+    "precision": 0.6538461538461539
+   },
+   "people": {
+    "n": 21,
+    "correct": 9,
+    "precision": 0.42857142857142855
+   },
+   "places": {
+    "n": 20,
+    "correct": 16,
+    "precision": 0.8
+   }
+  },
+  "pooled_recall": 0.9333333333333333
+ },
+ "entities_pooled_gold": 45,
+ "aspects": {
+  "n": 30,
+  "pair_precision": 0.43333333333333335,
+  "polarity_acc_on_correct": 0.46153846153846156,
+  "end_to_end": 0.2,
+  "by_rule": {
+   "amod": "7/24",
+   "acomp": "6/6"
+  }
+ }
+}
