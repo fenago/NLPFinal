@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customer Review Analyzer: NLTK + spaCy</title>
+  <meta name="description" content="Sentiment, key phrases, aspects and the people, places, brands and products mentioned in Yelp reviews, analysed with NLTK and spaCy.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="styles.css">
+  <script>
+    // Apply the saved theme before first paint (no flash). Values: "light" | "dark" | absent = system.
+    try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <script defer src="vendor/chart.umd.min.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-row">
+      <div>
+        <h1>Customer Review Analyzer</h1>
+        <p class="tagline">Sentiment, key phrases, aspects and the people, places, brands and products in real Yelp reviews.</p>
+      </div>
+      <button id="theme-toggle" class="btn btn-ghost" type="button" aria-label="Colour theme: system">Theme: system</button>
+    </div>
+    <nav class="wrap">
+      <div role="tablist" aria-label="Analyzer views" class="tabs">
+        <button role="tab" id="tab-dashboard" aria-controls="panel-dashboard" aria-selected="true" tabindex="0">Dashboard</button>
+        <button role="tab" id="tab-reviews" aria-controls="panel-reviews" aria-selected="false" tabindex="-1">Reviews &amp; examples</button>
+        <button role="tab" id="tab-live" aria-controls="panel-live" aria-selected="false" tabindex="-1">Analyze your own review</button>
+        <button role="tab" id="tab-about" aria-controls="panel-about" aria-selected="false" tabindex="-1">About &amp; method</button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="wrap">
+    <aside class="legend" aria-labelledby="legend-title">
+      <h2 id="legend-title" class="legend-title">Which library made each result?</h2>
+      <ul class="legend-list">
+        <li><span class="badge badge-nltk">NLTK</span> Tokenizing, VADER sentiment, word counts and key phrases. Runs in the Netlify build <em>and</em> live in your browser.</li>
+        <li><span class="badge badge-spacy">spaCy</span> Named entities (people, places, brands, products), noun-chunk aspects and the dependency parse. Runs only in the Netlify build, so it covers dataset reviews and curated examples.</li>
+        <li><span class="badge badge-both">NLTK + spaCy</span> spaCy finds the aspect and its opinion word; NLTK VADER scores the opinion.</li>
+      </ul>
+    </aside>
+
+    <div id="global-status" class="status" role="status" aria-live="polite"></div>
+
+    <!-- ============================== Dashboard ============================== -->
+    <section role="tabpanel" id="panel-dashboard" aria-labelledby="tab-dashboard" tabindex="0">
+      <h2 class="visually-hidden">Dashboard</h2>
+      <p id="dataset-line" class="muted"></p>
+      <div class="grid">
+        <section class="panel" data-source="nltk" aria-labelledby="h-overview">
+          <header class="panel-head"><h3 id="h-overview">Overview</h3><span class="badge badge-nltk">NLTK</span></header>
+          <dl id="overview" class="stats"></dl>
+        </section>
+
+        <section class="panel" data-source="nltk" aria-labelledby="h-dist">
+          <header class="panel-head"><h3 id="h-dist">Sentiment distribution (VADER)</h3><span class="badge badge-nltk">NLTK</span></header>
+          <div class="chart-box"><canvas id="chart-sentiment" role="img" aria-label="Loading chart"></canvas></div>
+          <div class="chart-box"><canvas id="chart-histogram" role="img" aria-label="Loading chart"></canvas></div>
+          <p class="note">A review is positive when VADER's compound score is at least 0.05 and negative when it is at most −0.05.</p>
+        </section>
+
+        <section class="panel panel-wide" data-source="nltk" aria-labelledby="h-stars">
+          <header class="panel-head"><h3 id="h-stars">VADER vs star rating</h3><span class="badge badge-nltk">NLTK</span></header>
+          <div class="two-col">
+            <div class="chart-box"><canvas id="chart-stars" role="img" aria-label="Loading chart"></canvas></div>
+            <div id="confusion" class="confusion"></div>
+          </div>
+          <p class="note">Stars map to expected labels: 1–2 negative, 3 neutral, 4–5 positive. Full metrics are in the evaluation report.</p>
+        </section>
+
+        <section class="panel" data-source="nltk" aria-labelledby="h-words">
+          <header class="panel-head"><h3 id="h-words">Top words</h3><span class="badge badge-nltk">NLTK</span></header>
+          <div class="chart-box tall"><canvas id="chart-words" role="img" aria-label="Loading chart"></canvas></div>
+          <p class="note">FreqDist over all reviews, stopwords removed.</p>
+        </section>
+
+        <section class="panel" data-source="nltk" aria-labelledby="h-phrases">
+          <header class="panel-head"><h3 id="h-phrases">Key phrases (collocations)</h3><span class="badge badge-nltk">NLTK</span></header>
+          <div class="chart-box tall"><canvas id="chart-phrases" role="img" aria-label="Loading chart"></canvas></div>
+          <p class="note">Bigram collocations seen at least 3 times, ranked by likelihood ratio. Bar length = how often the phrase appears.</p>
+        </section>
+
+        <section class="panel panel-wide" data-source="both" aria-labelledby="h-aspects">
+          <header class="panel-head"><h3 id="h-aspects">Aspects and their sentiment</h3><span class="badge badge-both">NLTK + spaCy</span></header>
+          <div class="chart-box xtall"><canvas id="chart-aspects" role="img" aria-label="Loading chart"></canvas></div>
+          <p class="note">spaCy pairs each aspect (a noun chunk such as "fish sandwich") with its opinion word through the dependency parse; NLTK VADER scores the opinion. Select a bar to read those reviews.</p>
+        </section>
+
+        <section class="panel panel-wide" data-source="spacy" aria-labelledby="h-entities">
+          <header class="panel-head"><h3 id="h-entities">Who and what reviewers mention</h3><span class="badge badge-spacy">spaCy</span></header>
+          <div class="leaderboards">
+            <div><h4>People</h4><ol id="lb-people" class="leaderboard"></ol></div>
+            <div><h4>Places</h4><ol id="lb-places" class="leaderboard"></ol></div>
+            <div><h4>Brands &amp; businesses</h4><ol id="lb-brands" class="leaderboard"></ol></div>
+            <div><h4>Products</h4><ol id="lb-products" class="leaderboard"></ol></div>
+          </div>
+          <p class="note">spaCy <code>en_core_web_sm</code> named entities plus an EntityRuler of names found in this sample. A dot (<span aria-hidden="true">●</span>) marks entries matched by the EntityRuler. Select a name to read those reviews.</p>
+        </section>
+      </div>
+    </section>
+
+    <!-- ============================== Reviews ============================== -->
+    <section role="tabpanel" id="panel-reviews" aria-labelledby="tab-reviews" tabindex="0" hidden>
+      <h2 class="visually-hidden">Reviews and examples</h2>
+      <section class="panel" aria-labelledby="h-examples">
+        <header class="panel-head"><h3 id="h-examples">Curated examples with full spaCy output</h3><span class="badge badge-spacy">spaCy</span></header>
+        <p class="note">Hand-written demos are labelled <strong>Demo</strong>; the others are real dataset reviews.</p>
+        <div id="example-buttons" class="chip-row"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-browse">
+        <header class="panel-head"><h3 id="h-browse">Browse dataset reviews</h3></header>
+        <form id="filters" class="filters" role="search" onsubmit="return false">
+          <label>Stars
+            <select id="f-stars"><option value="">All</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+          </label>
+          <label>VADER label
+            <select id="f-label"><option value="">All</option><option value="positive">Positive</option><option value="neutral">Neutral</option><option value="negative">Negative</option></select>
+          </label>
+          <label class="grow">Search text
+            <input id="f-text" type="search" placeholder="e.g. pizza">
+          </label>
+          <div id="f-chip" class="filter-chip" hidden></div>
+        </form>
+        <p id="review-count" class="muted" aria-live="polite"></p>
+        <div class="reviews-layout">
+          <ul id="review-list" class="review-list" aria-label="Reviews"></ul>
+          <article id="review-detail" class="review-detail" aria-live="polite" tabindex="-1">
+            <p class="muted">Select a review to see its NLTK and spaCy analysis.</p>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============================== Live ============================== -->
+    <section role="tabpanel" id="panel-live" aria-labelledby="tab-live" tabindex="0" hidden>
+      <h2 class="visually-hidden">Analyze your own review</h2>
+      <div class="callout" role="note">
+        <p><strong>Live analysis uses NLTK only.</strong> NLTK runs in your browser through Pyodide (Python compiled to WebAssembly), so your text never leaves this page. spaCy cannot run in the browser and this site has no server, so entities and aspects are shown only for dataset reviews and the curated examples in <a href="#reviews" data-goto="reviews">Reviews &amp; examples</a>.</p>
+      </div>
+      <section class="panel" aria-labelledby="h-live-input">
+        <header class="panel-head"><h3 id="h-live-input">Your review</h3><span class="badge badge-nltk">NLTK</span></header>
+        <label for="live-text" class="field-label">Paste or type a review (up to 5,000 characters)</label>
+        <textarea id="live-text" rows="6" maxlength="5000" spellcheck="true">The pizza was amazing and the staff were friendly. But the wait was not short, and the fries were cold.</textarea>
+        <div class="row">
+          <button id="live-run" class="btn btn-primary" type="button">Analyze</button>
+          <span class="muted">Try:</span>
+          <button class="btn btn-ghost sample" type="button" data-sample="Absolutely loved it! Best tacos in town and the service was quick.">Positive</button>
+          <button class="btn btn-ghost sample" type="button" data-sample="Terrible experience. The food was cold, the waiter was rude and I will never come back.">Negative</button>
+          <button class="btn btn-ghost sample" type="button" data-sample="The burger was good but not great. Prices are fair, parking is a pain.">Mixed</button>
+        </div>
+        <div id="live-status" class="status" role="status" aria-live="polite"></div>
+        <progress id="live-progress" max="4" value="0" hidden aria-label="Loading NLTK in the browser"></progress>
+      </section>
+      <div id="live-results" class="grid" aria-live="polite"></div>
+    </section>
+
+    <!-- ============================== About ============================== -->
+    <section role="tabpanel" id="panel-about" aria-labelledby="tab-about" tabindex="0" hidden>
+      <h2>About and method</h2>
+      <div class="prose">
+        <p>This site is a static Netlify deployment with no server. At deploy time, the Netlify build runs Python: <strong>NLTK</strong> and <strong>spaCy</strong> analyse a sample of real Yelp reviews and write JSON files that this page reads. In your browser, <strong>Pyodide</strong> runs the same NLTK code for the "Analyze your own review" tab.</p>
+        <h3>What each library does here</h3>
+        <ul>
+          <li><span class="badge badge-nltk">NLTK</span> Punkt sentence splitting, Treebank word tokens, English stopwords (negations kept for phrases), VADER sentiment for every review and sentence, FreqDist top words, bigram collocations ranked by likelihood ratio.</li>
+          <li><span class="badge badge-spacy">spaCy</span> <code>en_core_web_sm</code> named entities mapped to people (PERSON), places (GPE, LOC, FAC), brands (ORG) and products (PRODUCT); an EntityRuler with names found in this sample; noun-chunk aspects reduced to lemmas; aspect–opinion pairs from the dependency parse (<code>amod</code>, <code>acomp</code> + <code>nsubj</code>, with <code>neg</code> flipping the opinion).</li>
+          <li><span class="badge badge-both">NLTK + spaCy</span> VADER scores each aspect's opinion phrase, and scores each review again with entity names masked so names like "Best Buy" do not count as praise.</li>
+        </ul>
+        <h3>Limits</h3>
+        <ul>
+          <li>VADER is a general-purpose lexicon (extended with 25 review words such as "bland" and "stale"). It still misses context-dependent words such as "cold", sarcasm and polite complaints, and it over-predicts "positive" on long reviews: it agrees with the star rating for about 61% of this sample.</li>
+          <li>The sample is small (197 reviews) and has no business metadata, so the EntityRuler only knows names that appear in it.</li>
+          <li>spaCy results are not available for text you type, because spaCy cannot run in the browser and the project rules out outside servers.</li>
+        </ul>
+        <p>Numbers, confusion matrices and error analysis: see <code>reports/evaluation.md</code> in the project repository.</p>
+        <h3>Data and credits</h3>
+        <p id="credits">Reviews: Yelp Review Full (Zhang, Zhao &amp; LeCun, 2015, "Character-level Convolutional Networks for Text Classification", NeurIPS 28), used under the Yelp Dataset terms for academic, non-commercial use. Libraries: NLTK, spaCy, Pyodide, Chart.js (MIT).</p>
+        <p id="versions" class="muted"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Customer Review Analyzer · NLP final project · Data: Yelp Review Full (Zhang et al., 2015), academic and non-commercial use only. No cookies, no tracking, no server.</p>
+    </div>
+  </footer>
+</body>
+</html>
