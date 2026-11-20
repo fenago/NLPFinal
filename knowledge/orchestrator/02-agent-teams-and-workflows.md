@@ -56,3 +56,12 @@ Fetched: 2026-11-20
 - Handoffs go through files (data contract, `site/data/*.json`), not chat: subagents do not share history.
 - Keep parallel batches to disjoint file owners (roster ownership table).
 - Gate each phase with a review step before PR merge (see 03-git-workflow.md).
+
+## Decision guide for ORC (derived from the pages above)
+| Situation | Use |
+|---|---|
+| Independent lookups (e.g. read dataset docs, read Pyodide docs) | Parallel subagents, short summaries back |
+| Sequential handoff (DATA then NLTK/SPACY then BUILD) | Chain subagents; pass file paths, not prose |
+| Many files, long-running, needs discussion between workers | Agent teams (experimental), only if enabled; start with review work |
+| Task needs your conversation history | Main conversation or a fork (`/subtask`), not a fresh subagent |
+| Risky or large edits | Plan mode first, or `isolation: worktree` |

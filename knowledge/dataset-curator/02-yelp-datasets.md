@@ -56,3 +56,12 @@ print(ds["train"].features["label"].names)            # confirm the 5 class name
 print(ds["train"][0])
 ```
 (The snippet follows the `load_dataset` usage in the Hugging Face "Load" guide; the printed values are what the card says to expect, not output captured in this session.)
+
+## Handling the escaped text in `text`
+```python
+import re
+def clean_yelp(t: str) -> str:
+    t = t.replace("\\n", " ").replace('\\"', '"')   # card: newlines stored as backslash-n
+    return re.sub(r"\s+", " ", t).strip()
+```
+Check a few rows by eye first; the viewer preview shows both `\\n` sequences and escaped quotes in the stored text.

@@ -54,3 +54,10 @@ Fetched: 2026-11-20
 - Include 1-2 `<example>` blocks of a good handoff note, not long prose.
 - Keep each agent file short; move reference material to skills/knowledge files loaded on demand.
 - Move any rule that cannot have exceptions (never commit to `main`, never delete `nltk_data/`) into a hook, not a prompt.
+
+## Checklist before shipping an agent prompt
+- Can a colleague with no context follow it (the "key test")?
+- Does it name concrete files, commands and a pass/fail check?
+- Does every "never" carry a reason?
+- Is verbosity set (for example "report in under 200 words with file paths")?
+- Is anything in it something the agent could read from the repo? If yes, cut it.

@@ -56,3 +56,4 @@ Fetched: 2026-11-20
 - Rules dir: `.claude/rules/*.md`, one topic per file, discovered recursively; files without `paths` frontmatter load at launch with the same priority as `.claude/CLAUDE.md`.
 - Personal per-project prefs: `CLAUDE.local.md` (gitignored); across worktrees, import a file from home instead: `- @~/.claude/my-project-instructions.md`.
 - Instructions seem lost after `/compact`: CLAUDE.md is re-read, but conversational instructions are not; put durable rules in CLAUDE.md (page section "Instructions seem lost after /compact").
+- Size guard: run `wc -m path/to/CLAUDE.md` to count characters when checking the on-demand file limit.

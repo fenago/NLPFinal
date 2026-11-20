@@ -46,3 +46,15 @@ Fetched: 2026-11-20
 4. Open a PR (draft while in progress); ORC reviews against the data contract; QA checks pass in the Checks tab; Netlify deploy preview is the visual check.
 5. After merge, delete the topic branch: `git branch -d <branch>` (safe, refuses if unmerged).
 6. Never force-push `main`; do not use `-D` unless ORC confirms the branch is disposable.
+
+## Conflict handling (git merge page, "How conflicts are presented" and "How to resolve conflicts")
+- When a merge stops on conflicts, HEAD stays where it was and conflicting files are marked with `<<<<<<<`, `=======`, `>>>>>>>` markers.
+- Resolve by editing the files, `git add` them, then `git merge --continue` (or `git commit`). Abort with `git merge --abort`.
+- Prevent conflicts by file ownership (docs/expert-roster.md): two agents should not edit the same file in parallel branches.
+
+## Checklist for ORC before approving a PR
+- Branch is topic-scoped and named for the agent and task.
+- PR is out of draft, description states what changed and which contract fields are affected.
+- Checks tab green (tests, build); deploy preview opens.
+- Files touched belong to the PR author per the ownership table, or the owner reviewed.
+- No secrets, no large data files beyond the size budget (sample under 5 MB).

@@ -53,3 +53,13 @@ path = hf_hub_download(
 - Pin `huggingface_hub` and (if used) `datasets` versions in the curation script's requirements; the Netlify build must not need either, because only the sampled JSONL is committed.
 - Curation script outline: `hf_hub_download(..., repo_type="dataset", revision=<commit hash>)` -> stream the file line by line (327 MB) -> filter -> sample -> write `data/reviews_sample.jsonl`.
 - Record the commit hash and download date in `data/README.md` or `data/PROVENANCE.md`.
+
+## Minimal curation download script (follows the documented calls)
+```python
+from huggingface_hub import hf_hub_download
+REPO = "McAuley-Lab/Amazon-Reviews-2023"
+reviews = hf_hub_download(REPO, "raw/review_categories/All_Beauty.jsonl", repo_type="dataset")
+meta    = hf_hub_download(REPO, "raw/meta_categories/meta_All_Beauty.jsonl", repo_type="dataset")
+print(reviews, meta)   # paths inside the HF cache; read-only use
+```
+Expected size on disk: about 327 MB and 213 MB (file sizes shown on the Hub tree). Run once, offline from the Netlify build.
