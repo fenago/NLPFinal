@@ -1,5 +1,4 @@
-# Local development and tests (not installed by Netlify).
+# Local development and tests (not installed by Netlify). Browser tests use Node Playwright (package.json).
 -r requirements.txt
 pytest==9.2.0
 jsonschema==4.26.0
-playwright==1.65.2
