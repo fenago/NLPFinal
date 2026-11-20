@@ -1,6 +1,6 @@
 # Raw Yelp review rows (partial)
 
-**Status: partial fetch.** Only 1 of the 30 planned pages was retrieved. Re-run the fetch for the missing offsets before using this file for training or evaluation.
+**Status: partial fetch.** Only the first page (offset 0, 100 rows) of each split was reachable. The HF datasets-server returned 502/503 for every other offset on 2026-11-20. Re-run the fetch for the missing offsets before using this file for training or evaluation.
 
 ## Source
 
@@ -17,14 +17,15 @@
 
 ## Contents
 
-- Row count: 100 (row_idx 0-99).
-- File: `yelp_rows.jsonl`, one JSON object per line: `{"row_idx": int, "label": int, "text": str}`.
+- Row count: 200 total (100 train, 100 test), row_idx 0-99 in each split.
+- File: `yelp_rows.jsonl`, one JSON object per line: `{"split": "train" | "test", "row_idx": int, "label": int, "text": str}`. Deduplicated on (split, row_idx).
 - Label mapping: 0-4 = 1-5 stars.
-- Label counts: 0: 24, 1: 19, 2: 13, 3: 18, 4: 26.
+- Train label counts (100): 0: 24, 1: 19, 2: 13, 3: 18, 4: 26.
+- Test label counts (100): 0: 24, 1: 26, 2: 13, 3: 23, 4: 14.
 
 ## Pages
 
-Raw JSON response bodies are kept in `pages/offset_0.json`.
+Raw JSON response bodies are kept in `pages/offset_0.json` (train) and `pages/test_offset_0.json` (test).
 
 ## Terms and citation
 
