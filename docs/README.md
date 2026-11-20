@@ -13,6 +13,7 @@ These docs are the shared context for the agent team that will design and build 
 | 03 | [spaCy](03-spacy.md) | Named entities (+EntityRuler), noun chunks, lemmas, dependency‑based aspect↔opinion — code, verified output, gotchas |
 | 04 | [Dataset](04-dataset.md) | Amazon Reviews 2023 (primary), Yelp Review Full (restaurant mode), Yelp Open Dataset — fields, size, terms, sampling plan |
 | 05 | [Netlify architecture](05-netlify-architecture.md) | What Netlify can/cannot run (build‑time Python, Functions languages, Pyodide), recommended architecture, config sketches, risks |
+| — | [Expert roster](expert-roster.md) | The 13 agents to design, build, test and deploy the app, with job descriptions, shared-skill matrix and handoff order |
 
 ## Key decisions at a glance
 
@@ -23,8 +24,11 @@ These docs are the shared context for the agent team that will design and build 
 5. **Netlify facts** = Python runs **only at build time**; Functions are **JS/TS/Go only**; Netlify Server is **Node only**; **Pyodide runs NLTK but not spaCy**.
 6. **Architecture** = full NLTK + spaCy pipeline at build → static JSON dashboard; live "analyze your review" with NLTK in the browser via Pyodide; live spaCy on new text only via an optional external API proxied through Netlify redirects.
 
-## Open questions for the team / instructor
+## Decisions log
 
-- Is an off‑Netlify helper API (Tier 2 in doc 05) acceptable, or must 100% of compute be on Netlify (Tier 1)?
+- **2026‑11‑20 — Everything runs on Netlify, no outside servers.** Tier 1 architecture from doc 05: NLTK + spaCy run over the dataset at build time → static JSON; NLTK also runs live in the browser via Pyodide for "Analyze your own review". The Tier 2 external API is dropped.
+
+## Open questions
+
 - Product mode only, or also a restaurant (Yelp) toggle?
 - Which Amazon category? (All_Beauty recommended for size; Cell_Phones for richer product names.)
