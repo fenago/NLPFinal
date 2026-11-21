@@ -9,7 +9,7 @@ The roles below cover only what that stack needs. See [What we deliberately do n
 
 ---
 
-## 1. The roster (13 agents)
+## 1. The roster (15 agents)
 
 | # | Agent | ID | One-line job description |
 |---|---|---|---|
@@ -26,6 +26,8 @@ The roles below cover only what that stack needs. See [What we deliberately do n
 | 11 | **QA / Test Engineer** | `QA` | Writes and runs Python unit tests for the pipeline and browser end-to-end tests with Playwright for both tabs (including the Pyodide cold start), plus checks on file sizes and page speed. |
 | 12 | **NLP Evaluation Analyst** | `EVAL` | Measures quality independently of the NLTK and spaCy experts: VADER labels vs. star ratings (accuracy and confusion matrix), entity precision and recall with and without the EntityRuler, and how often aspect pairs are correct. |
 | 13 | **Technical Writer** | `DOC` | Writes the project README, the in-app "About / Method" page, dataset credits and the final report and demo script, using the experts' notes and EVAL's numbers. |
+| 14 | **UI Designer: Apple Liquid Glass** (`ui-designer-apple-liquid-glass`, Sable) | `UID` | Apple-style UI designer (Liquid Glass, glassmorphism). Owns the visual design: glass materials, typography, color, light/dark mode, spacing, icons and motion. Use for any visual design or restyling work. |
+| 15 | **UX Designer: Apple HIG** (`ux-designer-apple-hig`, Wren) | `UXD` | Apple-style UX designer (Human Interface Guidelines). Owns navigation, user flows, clarity, microcopy, empty/loading/error states and accessibility. Use for usability reviews, flows and accessibility audits. |
 
 ### Who works in each phase
 
@@ -34,6 +36,7 @@ The roles below cover only what that stack needs. See [What we deliberately do n
 | **Design** | ORC | META (sets up the agents), NLTK, SPACY, DATA, BUILD, PYO, UI, VIZ, NET (agree the JSON contract and the size budgets) |
 | **Build** | ORC | DATA → NLTK + SPACY → BUILD → PYO + UI + VIZ; NET in parallel (first deploy preview early) |
 | **Test** | QA | EVAL (metrics), NLTK and SPACY (fixes), PYO and UI (browser fixes), META (agent performance review) |
+| **Design review (any time)** | UXD | UID (visual options, tokens), UI and VIZ (implement the chosen option), QA (accessibility checks), DOC (microcopy) |
 | **Deploy** | NET | ORC (go/no-go), QA (smoke test on the production URL), DOC (final report and links) |
 
 ### Who owns which files
@@ -54,6 +57,8 @@ The roles below cover only what that stack needs. See [What we deliberately do n
 | `reports/evaluation.md` | EVAL | NLTK, SPACY, DOC |
 | `README.md`, final report | DOC | ORC |
 | Agent prompts and skills, `docs/expert-roster.md` | META | ORC |
+| `site/options/` (design previews), design tokens, `docs/design-options.md` | UID | UXD, UI, QA |
+| `docs/ux-review.md`, `docs/user-flows.md`, accessibility audit reports | UXD | UID, UI, QA |
 
 ---
 
@@ -156,9 +161,30 @@ Each skill is listed once with the agents that need it. **Owner** is the agent a
 | S44 | Explaining NLP choices (why NLTK vs. spaCy for each feature, known limits) | DOC | NLTK, SPACY, EVAL |
 | S45 | Citations and dataset credits | DOC | DATA |
 
+### K. Design (Apple-style UI and UX)
+
+| ID | Skill | Owner | Shared with |
+|---|---|---|---|
+| S46 | `liquid-glass-web`: CSS for the regular and clear variants, glass only on the navigation/controls layer, a 35 % dim layer over bright backgrounds, and a legibility check | UID | UI |
+| S47 | `apple-typography-web`: system font stack, never embed SF Pro (license), 17px body type scale | UID | UI, UXD |
+| S48 | `apple-color-dark-mode`: semantic color tokens for light, dark and increased contrast | UID | UI, VIZ, UXD |
+| S49 | `apple-layout-spacing`: 8-pt grid, margins, readable widths, breakpoints | UID | UXD, UI |
+| S50 | `icon-style`: open-source line icons, no Apple logos or SF Symbols | UID | UI |
+| S51 | `design-options-board`: 2–3 side-by-side options built with real data | UID | UXD |
+| S52 | `design-tokens`: CSS custom properties for color, type, space, radius, glass and motion | UID | UI, VIZ |
+| S53 | `hig-principles-review`: hierarchy, deference to content, consistency, clarity, feedback | UXD | UID |
+| S54 | `apple-navigation-patterns`: tab bar on phones, sidebar on desktop | UXD | UID, UI |
+| S55 | `accessibility-audit`: 4.5:1 contrast, 44px targets, 200 % zoom, reduce motion, reduce transparency, increase contrast | UXD | UID, QA, UI |
+| S56 | `usability-heuristic-review`: ranked problems with severity, fix, owner | UXD | — |
+| S57 | `states-and-microcopy`: empty, loading, error and success states and their text | UXD | UI, DOC |
+
+The designers also preload existing skills. UID loads S05, S06, S21, S30, S31, S32 and S33. UXD loads S05, S06, S29, S31, S34 and S44.
+
 ---
 
 ## 3. Skill matrix (✔ = needs the skill, ★ = owns it)
+
+*S01–S45 are below. The design skills S46–S57 are listed with their owners and sharers in table K above.*
 
 | Skill | ORC | META | NLTK | SPACY | DATA | BUILD | PYO | UI | VIZ | NET | QA | EVAL | DOC |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -209,7 +235,8 @@ Each skill is listed once with the agents that need it. **Owner** is the agent a
 | S45 Citations | | | | | ✔ | | | | | | | | ★ |
 
 **Skills shared most widely (good topics for shared skill files the Meta Agent writes once and reuses):**
-- **S06 Git workflow:** all 13 agents.
+- **S06 Git workflow:** all 15 agents.
+- **S55 Accessibility audit:** 4 agents (UXD, UID, QA, UI). It is the shared quality bar for every screen and design option.
 - **S21 JSON data contract:** 7 agents. This is the main link between the Python build and the browser.
 - **S23 Python 3.12:** 7 agents.
 - **S05 Netlify constraint guardrail:** 7 agents. This stops anyone proposing a server or a Python function.
@@ -233,6 +260,7 @@ Each skill is listed once with the agents that need it. **Owner** is the agent a
 
 ## 5. Agent handoff order (for the Orchestrator)
 
+0. Design experts: **UXD** reviews the app (`docs/ux-review.md`). **UID** builds options under `site/options/`. **ORC** picks one, then **UI** and **VIZ** implement it in the live app, and **QA** runs the accessibility audit.
 1. **META** creates the 12 other agents from this roster: role prompt, owned skills, shared-skill files and file ownership.
 2. **ORC** has BUILD write `docs/data-contract.md` and gets UI, VIZ, PYO, NLTK and SPACY to agree it. This is gate 1.
 3. **DATA** commits the sample and the EntityRuler patterns. Then **NLTK** and **SPACY** deliver their analyzer modules, each with pytest tests (QA reviews).

@@ -18,6 +18,8 @@ One folder per subagent in `.claude/agents/`. Each holds reference notes taken f
 | [netlify-engineer](netlify-engineer/) | docs.netlify.com (build config, Python, netlify.toml, headers, caching, functions limits, deploys, CLI) |
 | [qa-engineer](qa-engineer/) | docs.pytest.org, json-schema.org, python-jsonschema, playwright.dev, web.dev |
 | [nlp-evaluator](nlp-evaluator/) | scikit-learn.org metrics, spacy.io Scorer, nltk.org VADER, vaderSentiment repo |
+| [ui-designer-apple-liquid-glass](ui-designer-apple-liquid-glass/) | developer.apple.com HIG (materials/Liquid Glass, color, dark mode, typography), Adopting Liquid Glass, developer.apple.com/fonts (SF license), MDN backdrop-filter + preference media features. Plus `docs/` (key references) and `examples/` (worked examples) |
+| [ux-designer-apple-hig](ux-designer-apple-hig/) | developer.apple.com HIG (accessibility, layout, tab bars, sidebars, materials), MDN preference media features. Plus `docs/` and `examples/` |
 | [technical-writer](technical-writer/) | developers.google.com/style, diataxis.fr, official citations (NLTK, spaCy, VADER, datasets) |
 
 Items a researcher could not confirm on a fetched page are marked **"(unverified)"**. Check them before relying on them. The meta-agent owns the structure of this folder, and each specialist owns the content of its own notes.

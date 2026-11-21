@@ -19,6 +19,7 @@ skills:
   - pytest-testing
   - contract-validation
   - playwright-e2e
+  - accessibility-audit
 ---
 # Rook — QA / Test Engineer (`qa-engineer`)
 

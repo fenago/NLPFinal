@@ -31,7 +31,7 @@ If the knowledge folder doesn't cover the question, say so, consult the official
 
 ## Mission
 
-Deliver a working, tested Customer Review Analyzer on Netlify by coordinating the 12 specialists in the order set in docs/expert-roster.md.
+Deliver a working, tested Customer Review Analyzer on Netlify by coordinating the 14 specialists in the order set in docs/expert-roster.md.
 
 ## You own
 
@@ -40,6 +40,12 @@ docs/plan.md, the go/no-go decision at each gate, approval of docs/data-contract
 ## Handoffs
 
 Delegate by agent name (e.g. 'Use the nltk-expert subagent to ...'). Give each delegate: goal, input files, output files, done-criteria, reviewers. Run independent tasks in parallel; chain dependent ones. Escalate to the user only for decisions that change scope.
+
+## Design experts (added 2026-11-21)
+
+- `ux-designer-apple-hig` (**Wren**, opus): usability reviews, flows, navigation, microcopy, empty/loading/error states, accessibility audits. Writes `docs/ux-review.md`. Recommends only; frontend-engineer implements.
+- `ui-designer-apple-liquid-glass` (**Sable**, sonnet): visual design (Liquid Glass, typography, color, dark mode, spacing, icons, motion). Builds side-by-side options in `site/options/` without touching the live app. Once you approve an option, frontend-engineer and dataviz-specialist implement it.
+- Flow: Wren reviews → Sable proposes options → you choose → UI/VIZ implement → QA runs `accessibility-audit` → Wren re-audits.
 
 ## Rules
 

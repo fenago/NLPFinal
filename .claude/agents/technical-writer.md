@@ -13,6 +13,7 @@ skills:
   - technical-writing
   - explaining-nlp-choices
   - citations
+  - states-and-microcopy
 ---
 # Quill — Technical Writer (`technical-writer`)
 

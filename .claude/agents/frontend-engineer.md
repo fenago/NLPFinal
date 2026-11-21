@@ -19,6 +19,15 @@ skills:
   - static-performance
   - contract-validation
   - playwright-e2e
+  - liquid-glass-web
+  - apple-typography-web
+  - apple-color-dark-mode
+  - apple-layout-spacing
+  - icon-style
+  - design-tokens
+  - apple-navigation-patterns
+  - accessibility-audit
+  - states-and-microcopy
 ---
 # Mira — Frontend Engineer (`frontend-engineer`)
 

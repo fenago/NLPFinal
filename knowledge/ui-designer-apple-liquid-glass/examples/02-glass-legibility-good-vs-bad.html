@@ -1,0 +1,83 @@
+<!doctype html>
+<!--
+  WORKED EXAMPLE 02: glass legibility, good vs bad. Study this before putting text on glass.
+
+  The same label sits on a glass bar over the WORST-CASE background (bright photo-like gradient
+  with white highlights). Compare:
+
+  BAD 1  "Clear" glass (≈15% tint), no dim layer, mid-gray text  -> fails 4.5:1 over the white highlight.
+  BAD 2  Glass applied to CONTENT (a review card)                 -> body text fights the background;
+                                                                     glass belongs on controls only.
+  BAD 3  Legibility depends on blur                               -> with reduce transparency or no
+                                                                     backdrop-filter support it becomes unreadable.
+  GOOD 1 Regular variant (≈72% tint) + label color token          -> passes over bright and dark content.
+  GOOD 2 Clear variant + 35% dim layer + white label              -> passes; used only over media.
+  GOOD 3 Solid fallback under prefers-reduced-transparency / prefers-contrast: more.
+
+  Legibility check procedure (skill liquid-glass-web): measure the label against the brightest AND
+  darkest area that can sit under the glass, in light and dark mode, then again with the fallbacks on.
+  Contrast numbers below are representative measurements for these exact colors, rounded.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Example: glass legibility good vs bad</title>
+<style>
+  :root { --font: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; }
+  body { margin: 0; padding: 24px; font: 17px/1.47 var(--font); background: #f2f2f7; color: #000; }
+  h1 { font-size: 28px; } h2 { font-size: 17px; margin: 0 0 8px; }
+  .grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .demo { border-radius: 16px; overflow: hidden; background: #fff; }
+  /* worst-case backdrop: very bright highlight next to saturated color */
+  .scene { position: relative; height: 180px;
+           background: radial-gradient(120px 80px at 30% 60%, #fff 0 60%, transparent 61%),
+                       linear-gradient(120deg, #ffd27a, #6fc3ff 55%, #2a4d9b); }
+  .bar { position: absolute; left: 16px; right: 16px; bottom: 16px; height: 56px; border-radius: 999px;
+         display: flex; align-items: center; justify-content: center; font-weight: 600; }
+  .verdict { padding: 12px 16px; font-size: 15px; }
+  .fail { color: #9b1c1c; } .pass { color: #1b5e20; }
+
+  .bad-clear  { background: rgb(255 255 255 / .15); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+                color: #8e8e93; }
+  .good-regular { background: rgb(255 255 255 / .72); backdrop-filter: blur(24px) saturate(180%);
+                  -webkit-backdrop-filter: blur(24px) saturate(180%); border: 1px solid rgb(255 255 255 / .5);
+                  color: #000; }
+  .good-clear { background: rgb(255 255 255 / .18); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+                color: #fff; isolation: isolate; }
+  .good-clear::before { content: ""; position: absolute; inset: 0; border-radius: inherit;
+                        background: rgb(0 0 0 / .35); z-index: -1; }           /* the 35% dim layer */
+  .bad-content { position: absolute; inset: 16px; border-radius: 14px; padding: 12px;
+                 background: rgb(255 255 255 / .2); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+                 color: #3c3c43; font-weight: 400; display: block; height: auto; }
+  .bad-blur-only { background: transparent; backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); color: #fff; }
+
+  @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+    .good-regular, .good-clear { background: #fff; color: #000; backdrop-filter: none; -webkit-backdrop-filter: none; }
+    .good-clear::before { display: none; }
+  }
+</style>
+</head>
+<body>
+<h1>Glass legibility: good vs bad</h1>
+<div class="grid">
+  <div class="demo"><div class="scene"><div class="bar bad-clear">Dashboard</div></div>
+    <p class="verdict fail"><strong>BAD 1:</strong> clear glass, no dim, gray label. About 1.6:1 over the white highlight. Fails 4.5:1.</p></div>
+
+  <div class="demo"><div class="scene"><div class="bar bad-content">“The pad thai was amazing but the wait was 45 minutes…” (review text on glass)</div></div>
+    <p class="verdict fail"><strong>BAD 2:</strong> glass on content. Long text over a moving, colorful backdrop is hard to read. Use a solid card.</p></div>
+
+  <div class="demo"><div class="scene"><div class="bar bad-blur-only">Analyze</div></div>
+    <p class="verdict fail"><strong>BAD 3:</strong> legibility depends only on blur. White text on the white highlight is about 1.1:1 when blur is off or unsupported.</p></div>
+
+  <div class="demo"><div class="scene"><div class="bar good-regular">Dashboard</div></div>
+    <p class="verdict pass"><strong>GOOD 1:</strong> regular variant (72% tint) and a black label. Above 12:1 over the highlight and above 7:1 over the darkest blue.</p></div>
+
+  <div class="demo"><div class="scene"><div class="bar good-clear" style="position:absolute">Play demo</div></div>
+    <p class="verdict pass"><strong>GOOD 2:</strong> clear variant with a 35% dim layer and a white label. Above 4.5:1 across the scene. Use it only over media.</p></div>
+
+  <div class="demo"><div class="scene"><div class="bar" style="background:#fff;color:#000;border:2px solid #3c3c43">Dashboard</div></div>
+    <p class="verdict pass"><strong>GOOD 3:</strong> the solid fallback shown under reduce transparency or increase contrast. Always legible.</p></div>
+</div>
+</body>
+</html>

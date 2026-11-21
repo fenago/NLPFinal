@@ -1,0 +1,148 @@
+<!doctype html>
+<!--
+  WORKED EXAMPLE 01: Liquid Glass tab bar (phone) + sidebar (desktop), web translation.
+  Study this before designing. What "good" looks like on this team:
+
+  [A] Glass lives ONLY on the navigation/controls layer (tab bar, sidebar). Content cards are SOLID.
+  [B] Regular variant by default: mostly-opaque tint + backdrop blur + saturate, hairline light stroke.
+  [C] Content scrolls UNDER the floating bar, so the page reserves padding equal to the bar height.
+  [D] Fallbacks: no backdrop-filter support, prefers-reduced-transparency, prefers-contrast: more
+      all switch the glass to a solid, high-contrast surface. Nothing depends on blur to be legible.
+  [E] Reduced motion: transitions collapse to 0ms via motion tokens.
+  [F] Targets >= 44x44 CSS px, visible focus ring, icon + text label, aria-current on the active item.
+  [G] System font stack only (never embed SF Pro); open-source-style inline SVG icons (not SF Symbols).
+  [H] Same destinations, same order, same names on phone (tab bar) and desktop (sidebar).
+
+  Open this file directly in a browser; resize below/above 1024px to see tab bar vs sidebar.
+  Toggle DevTools > Rendering > "prefers-reduced-transparency" / "prefers-contrast" to see fallbacks.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Example: Liquid Glass navigation</title>
+<style>
+  /* ---------- tokens (see skills: design-tokens, apple-color-dark-mode) ---------- */
+  :root {
+    color-scheme: light dark;
+    --font-text: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif; /* [G] */
+    --fs-body: 1.0625rem; --fs-caption: .75rem; --fs-title: 1.75rem;
+    --bg: #f2f2f7; --bg-elevated: #ffffff; --label: #000; --label-2: rgb(60 60 67 / .78);
+    --separator-strong: #3c3c43; --tint: #0066cc; --pos: #1f6fb2; --neg: #b8460b;
+    --glass-regular: color-mix(in srgb, var(--bg-elevated) 72%, transparent);   /* [B] */
+    --glass-stroke: color-mix(in srgb, white 50%, transparent);
+    --glass-shadow: 0 8px 32px rgb(0 0 0 / .16);
+    --radius-card: 16px; --radius-pill: 999px;
+    --tabbar-h: 64px; --sidebar-w: 248px;
+    --dur: 200ms; --ease: cubic-bezier(.2,.8,.2,1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #000; --bg-elevated: #1c1c1e; --label: #fff; --label-2: rgb(235 235 245 / .78);
+            --separator-strong: #d1d1d6; --tint: #4da3ff; --pos: #64a8ff; --neg: #ff9f5a;
+            --glass-stroke: color-mix(in srgb, white 18%, transparent); --glass-shadow: 0 8px 32px rgb(0 0 0 / .5); }
+  }
+  @media (prefers-reduced-motion: reduce) { :root { --dur: 0ms; } }                  /* [E] */
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 400 var(--fs-body)/1.47 var(--font-text); color: var(--label);
+         /* a colorful backdrop so the glass has something to refract */
+         background: radial-gradient(60vw 40vh at 20% 10%, #8ec5ff55, transparent),
+                     radial-gradient(50vw 40vh at 90% 60%, #ffb48a55, transparent), var(--bg); }
+
+  /* ---------- content layer: SOLID cards [A] ---------- */
+  main { padding: 24px 16px calc(var(--tabbar-h) + 32px + env(safe-area-inset-bottom)); /* [C] */
+         max-width: 900px; margin: 0 auto; }
+  h1 { font-size: var(--fs-title); line-height: 1.2; margin: 8px 0 16px; }
+  .card { background: var(--bg-elevated); border-radius: var(--radius-card); padding: 16px; margin-bottom: 16px; }
+  .badge { font-size: var(--fs-caption); font-weight: 600; padding: 2px 8px; border-radius: var(--radius-pill);
+           background: color-mix(in srgb, var(--tint) 14%, transparent); color: var(--label); }
+  .pos { color: var(--pos); font-weight: 600; } .neg { color: var(--neg); font-weight: 600; }
+
+  /* ---------- navigation layer: GLASS [A][B] ---------- */
+  .glass {
+    background: var(--glass-regular);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+            backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid var(--glass-stroke);
+    box-shadow: var(--glass-shadow), inset 0 1px 0 rgb(255 255 255 / .3);
+  }
+  .nav-list { list-style: none; margin: 0; padding: 0; display: flex; }
+  .nav-link { display: flex; align-items: center; gap: 8px; min-width: 44px; min-height: 44px;   /* [F] */
+              color: var(--label-2); text-decoration: none; border-radius: 12px;
+              transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease); }
+  .nav-link[aria-current="page"] { color: var(--tint); font-weight: 600;
+              background: color-mix(in srgb, var(--tint) 14%, transparent); }
+  .nav-link:focus-visible { outline: 3px solid var(--tint); outline-offset: 2px; }
+  .nav-link svg { width: 22px; height: 22px; flex: none; }
+
+  /* phone: floating bottom tab bar [H] */
+  .tabbar { position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom));
+            height: var(--tabbar-h); border-radius: var(--radius-pill); padding: 6px; z-index: 10; }
+  .tabbar .nav-list { height: 100%; justify-content: space-around; }
+  .tabbar .nav-link { flex-direction: column; gap: 2px; justify-content: center; padding: 4px 12px;
+                      font-size: var(--fs-caption); }
+  .sidebar { display: none; }
+
+  /* desktop: floating sidebar, same items [H] */
+  @media (min-width: 1024px) {
+    .tabbar { display: none; }
+    .sidebar { display: block; position: fixed; top: 16px; bottom: 16px; left: 16px; width: var(--sidebar-w);
+               border-radius: 22px; padding: 16px 12px; z-index: 10; }
+    .sidebar .nav-list { flex-direction: column; gap: 4px; }
+    .sidebar .nav-link { padding: 10px 12px; }
+    .sidebar h2 { font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: .04em;
+                  color: var(--label-2); margin: 4px 12px 12px; }
+    main { padding: 32px 32px 32px calc(var(--sidebar-w) + 64px); max-width: none; }
+  }
+
+  /* ---------- fallbacks [D] ---------- */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass { background: var(--bg-elevated); }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .glass { background: var(--bg-elevated); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  }
+  @media (prefers-contrast: more) {
+    :root { --label-2: var(--label); }
+    .glass { background: var(--bg-elevated); -webkit-backdrop-filter: none; backdrop-filter: none;
+             border: 2px solid var(--separator-strong); box-shadow: none; }
+    .nav-link[aria-current="page"] { outline: 2px solid var(--tint); }
+  }
+</style>
+</head>
+<body>
+<!-- One <nav> per layout; both list the SAME destinations [H]. The hidden one is display:none, so screen readers see only one. -->
+<nav class="sidebar glass" aria-label="Main">
+  <h2>Review Analyzer</h2>
+  <ul class="nav-list">
+    <li><a class="nav-link" href="#dashboard" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</a></li>
+    <li><a class="nav-link" href="#reviews"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Reviews</a></li>
+    <li><a class="nav-link" href="#analyze"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Analyze</a></li>
+    <li><a class="nav-link" href="#about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>About</a></li>
+  </ul>
+</nav>
+
+<main id="dashboard">
+  <h1>Dashboard</h1>
+  <!-- Content is solid, never glass [A]. Real-style content: sentiment + library badge. -->
+  <section class="card" aria-labelledby="s1">
+    <h2 id="s1" style="margin:0 0 8px;font-size:1.25rem">Sentiment <span class="badge">NLTK</span></h2>
+    <p style="margin:0">197 reviews · <span class="pos">75% positive</span> · <span class="neg">25% negative</span></p>
+  </section>
+  <section class="card" aria-labelledby="s2">
+    <h2 id="s2" style="margin:0 0 8px;font-size:1.25rem">Brands mentioned <span class="badge">spaCy</span></h2>
+    <p style="margin:0">Entity leaderboard goes here in the real app.</p>
+  </section>
+  <p style="height:120vh;color:var(--label-2)">(Long content to scroll under the bar.)</p>
+</main>
+
+<nav class="tabbar glass" aria-label="Main">
+  <ul class="nav-list">
+    <li><a class="nav-link" href="#dashboard" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>Dashboard</a></li>
+    <li><a class="nav-link" href="#reviews"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Reviews</a></li>
+    <li><a class="nav-link" href="#analyze"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Analyze</a></li>
+    <li><a class="nav-link" href="#about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg>About</a></li>
+  </ul>
+</nav>
+</body>
+</html>

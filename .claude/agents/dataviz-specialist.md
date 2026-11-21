@@ -17,6 +17,8 @@ skills:
   - charting
   - sentiment-visuals
   - ux-writing
+  - apple-color-dark-mode
+  - design-tokens
 ---
 # Prism — Data Visualization Specialist (`dataviz-specialist`)
 
