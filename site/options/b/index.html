@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en" data-option="b">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Option B: Clean Apple Light - Customer Review Analyzer design preview</title>
+  <meta name="description" content="Design preview of the Customer Review Analyzer dashboard. Option B: Clean Apple Light. Uses the real data from /data/*.json.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="/vendor/chart.umd.min.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Navigation layer. Sidebar (desktop >= 1024px) and tab bar (phone < 700px) list the same destinations in the same order. -->
+  <nav class="sidebar" aria-label="Main">
+    <p class="brand">Customer Review Analyzer</p>
+    <ul class="nav-list">
+      <li><a class="nav-link" href="/#dashboard" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Dashboard</span></a></li>
+      <li><a class="nav-link" href="/#reviews"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg><span>Reviews</span></a></li>
+      <li><a class="nav-link" href="/#live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Analyze</span></a></li>
+      <li><a class="nav-link" href="/#about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg><span>About</span></a></li>
+    </ul>
+  </nav>
+
+  <div class="shell">
+    <header class="page-head">
+      <p class="eyebrow">Design preview · B · Clean Apple Light</p>
+      <h1>Dashboard</h1>
+      <p id="dataset-line" class="muted">Loading the dataset summary…</p>
+      <p class="preview-links"><a class="chip" href="/options/">All design options</a> <a class="chip" href="/">Open the live app</a></p>
+    </header>
+
+    <main id="main">
+      <details class="legend">
+        <summary class="legend-title">Which library made each result?</summary>
+        <ul class="legend-list">
+          <li><span class="badge badge-nltk">NLTK</span> <span>Tokenizing, VADER sentiment, word counts and key phrases. Runs in the Netlify build <em>and</em> live in your browser.</span></li>
+          <li><span class="badge badge-spacy">spaCy</span> <span>Named entities (people, places, brands, products), noun-chunk aspects and the dependency parse. Runs only in the Netlify build, so it covers dataset reviews and curated examples.</span></li>
+          <li><span class="badge badge-both">NLTK + spaCy</span> <span>spaCy finds the aspect and its opinion word; NLTK VADER scores the opinion.</span></li>
+        </ul>
+      </details>
+
+      <div id="global-status" class="status" role="status" aria-live="polite"></div>
+
+      <div class="grid">
+        <section class="panel panel-overview" aria-labelledby="h-overview">
+          <header class="panel-head"><h2 id="h-overview">Overview</h2><span class="badge badge-nltk">NLTK</span></header>
+          <dl id="overview" class="stats"></dl>
+        </section>
+
+        <section class="panel" aria-labelledby="h-dist">
+          <header class="panel-head"><h2 id="h-dist">Sentiment distribution (VADER)</h2><span class="badge badge-nltk">NLTK</span></header>
+          <div class="chart-box"><canvas id="chart-sentiment" role="img" aria-label="Loading chart"></canvas></div>
+          <ul id="sentiment-list" class="sent-list" aria-label="Sentiment counts"></ul>
+          <p class="note">A review is positive when VADER's compound score is at least 0.05 and negative when it is at most −0.05.</p>
+        </section>
+
+        <section class="panel" aria-labelledby="h-words">
+          <header class="panel-head"><h2 id="h-words">Top words</h2><span class="badge badge-nltk">NLTK</span></header>
+          <ol id="list-words" class="bars" aria-label="Top words by frequency"></ol>
+          <p class="note">FreqDist over all reviews, stopwords removed.</p>
+        </section>
+
+        <section class="panel" aria-labelledby="h-phrases">
+          <header class="panel-head"><h2 id="h-phrases">Key phrases (collocations)</h2><span class="badge badge-nltk">NLTK</span></header>
+          <ol id="list-phrases" class="bars" aria-label="Key phrases by frequency"></ol>
+          <p class="note">Bigram collocations seen at least 3 times, ranked by likelihood ratio. Bar length = how often the phrase appears.</p>
+        </section>
+
+        <section class="panel panel-wide" aria-labelledby="h-aspects">
+          <header class="panel-head"><h2 id="h-aspects">Aspects and their sentiment</h2><span class="badge badge-both">NLTK + spaCy</span></header>
+          <ol id="list-aspects" class="aspects" aria-label="Most discussed aspects"></ol>
+          <p class="note">spaCy pairs each aspect (a noun chunk such as "fish sandwich") with its opinion word through the dependency parse; NLTK VADER scores the opinion. Each bar splits an aspect's mentions into positive (+), neutral (○) and negative (−).</p>
+        </section>
+
+        <section class="panel panel-wide" aria-labelledby="h-entities">
+          <header class="panel-head"><h2 id="h-entities">Who and what reviewers mention</h2><span class="badge badge-spacy">spaCy</span></header>
+          <div class="leaderboards">
+            <div><h3>People</h3><ol id="lb-people" class="bars"></ol></div>
+            <div><h3>Places</h3><ol id="lb-places" class="bars"></ol></div>
+            <div><h3>Brands &amp; businesses</h3><ol id="lb-brands" class="bars"></ol></div>
+            <div><h3>Products</h3><ol id="lb-products" class="bars"></ol></div>
+          </div>
+          <p class="note">spaCy <code>en_core_web_sm</code> named entities plus an EntityRuler of names found in this sample. A dot (<span aria-hidden="true">●</span>) marks entries matched by the EntityRuler.</p>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>Customer Review Analyzer · NLP final project · Data: Yelp Review Full (Zhang et al., 2015), academic and non-commercial use only. No cookies, no tracking, no server.</p>
+    </footer>
+  </div>
+
+  <nav class="tabbar" aria-label="Main">
+    <ul class="nav-list">
+      <li><a class="nav-link" href="/#dashboard" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg><span>Dashboard</span></a></li>
+      <li><a class="nav-link" href="/#reviews"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg><span>Reviews</span></a></li>
+      <li><a class="nav-link" href="/#live"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg><span>Analyze</span></a></li>
+      <li><a class="nav-link" href="/#about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></svg><span>About</span></a></li>
+    </ul>
+  </nav>
+</body>
+</html>

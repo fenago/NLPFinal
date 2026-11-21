@@ -13,6 +13,9 @@ These docs are the shared context for the agent team that will design and build 
 | 03 | [spaCy](03-spacy.md) | Named entities (+EntityRuler), noun chunks, lemmas, dependency‑based aspect↔opinion — code, verified output, gotchas |
 | 04 | [Dataset](04-dataset.md) | Amazon Reviews 2023 (primary), Yelp Review Full (restaurant mode), Yelp Open Dataset — fields, size, terms, sampling plan |
 | 05 | [Netlify architecture](05-netlify-architecture.md) | What Netlify can/cannot run (build‑time Python, Functions languages, Pyodide), recommended architecture, config sketches, risks |
+| — | [UX review](ux-review.md) | Wren's ranked usability and accessibility review of the live app (measured evidence) |
+| — | [Design options](design-options.md) | Sable's three Dashboard options (A Liquid Glass, B Clean Apple Light, C Dark Pro), live at `/options/`, with audit results |
+| — | [Agent brains](agent-brains.md) | Personas, models and preloaded skills for all 15 agents |
 | — | [Expert roster](expert-roster.md) | The 13 agents to design, build, test and deploy the app, with job descriptions, shared-skill matrix and handoff order |
 
 ## Key decisions at a glance

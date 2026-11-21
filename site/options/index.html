@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Design options board - Customer Review Analyzer</title>
+  <meta name="description" content="Three design options for the Customer Review Analyzer dashboard, built with the real data. Compare and choose.">
+  <meta name="color-scheme" content="light dark">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --font-text: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+      --bg: #f2f2f7; --bg-elevated: #fff; --bg-fill: #f2f2f7; --label: #000; --label-2: #48484d; --label-3: #5f5f65;
+      --separator: rgb(60 60 67 / .29); --separator-strong: #3c3c43; --tint: #0066cc;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #000; --bg-elevated: #1c1c1e; --bg-fill: #2c2c2e; --label: #fff; --label-2: #d1d1d6; --label-3: #b0b0b6;
+              --separator: rgb(84 84 88 / .65); --separator-strong: #d1d1d6; --tint: #4da3ff; }
+    }
+    @media (prefers-contrast: more) { :root { --label-2: var(--label); --label-3: var(--label); --separator: var(--separator-strong); --tint: #004c99; } }
+    @media (prefers-contrast: more) and (prefers-color-scheme: dark) { :root { --tint: #8cc4ff; } }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 400 1.0625rem/1.47 var(--font-text); background: var(--bg); color: var(--label); -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 64px; }
+    h1 { font-size: 2.125rem; line-height: 1.2; margin: 8px 0 12px; }
+    h2 { font-size: 1.375rem; line-height: 1.2; margin: 0 0 8px; }
+    p { margin: 0 0 12px; max-width: 70ch; }
+    .muted { color: var(--label-2); }
+    a { color: var(--tint); }
+    :focus-visible { outline: 3px solid var(--tint); outline-offset: 2px; }
+    .skip-link { position: absolute; left: 16px; top: -100px; background: var(--bg-elevated); padding: 12px 16px; border-radius: 12px; min-height: 44px; }
+    .skip-link:focus { top: 12px; }
+    .cards { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); margin: 24px 0 32px; padding: 0; list-style: none; }
+    .card { background: var(--bg-elevated); border: 1px solid var(--separator); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px; height: 100%; }
+    .card h2 { margin: 0; }
+    .card p { margin: 0; }
+    .swatch { display: flex; gap: 6px; height: 36px; margin-bottom: 4px; }
+    .swatch i { flex: 1; border-radius: 8px; border: 1px solid var(--separator); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 20px; border-radius: 999px; background: var(--tint); color: #fff; font-weight: 600; text-decoration: none; margin-top: auto; align-self: flex-start; }
+    @media (prefers-color-scheme: dark) { .btn { color: #000; } }
+    @media (prefers-contrast: more) { .btn { color: #fff; } }
+    @media (prefers-contrast: more) and (prefers-color-scheme: dark) { .btn { color: #000; } }
+    .back { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; text-decoration: none; }
+    .table-wrap { overflow-x: auto; background: var(--bg-elevated); border: 1px solid var(--separator); border-radius: 16px; }
+    table { border-collapse: collapse; width: 100%; min-width: 720px; font-size: .9375rem; }
+    caption { text-align: left; padding: 16px 16px 8px; font-weight: 600; font-size: 1.0625rem; }
+    th, td { text-align: left; vertical-align: top; padding: 12px 16px; border-top: 1px solid var(--separator); }
+    thead th { color: var(--label-2); font-weight: 600; font-size: .8125rem; }
+    tbody th { font-weight: 600; white-space: nowrap; }
+    .note { font-size: .8125rem; color: var(--label-3); margin-top: 16px; }
+    @media (min-width: 700px) { .wrap { padding: 32px 24px 80px; } .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="wrap">
+    <a class="back" href="/">Back to the live app</a>
+    <header>
+      <h1>Design options for the Dashboard</h1>
+      <p class="muted">Three looks for the app's main screen, built from the same real data (<code>/data/*.json</code>), the same NLTK / spaCy badges and the same four destinations: Dashboard, Reviews, Analyze, About. Open each one on a phone-width window (tab bar) and on a wide window (sidebar), in light and dark. The live app is unchanged.</p>
+    </header>
+
+    <main id="main">
+      <h2 class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)">The options</h2>
+      <ul class="cards">
+        <li><article class="card">
+          <div class="swatch" aria-hidden="true"><i style="background:linear-gradient(120deg,#7cc0ff,#ffb08a)"></i><i style="background:#fff"></i><i style="background:rgb(255 255 255 / .8)"></i></div>
+          <h2>Option A: Liquid Glass</h2>
+          <p>A frosted floating tab bar on phones and a floating sidebar on desktop, over a soft colourful backdrop. Content cards stay solid.</p>
+          <a class="btn" href="/options/a/" aria-label="Open Option A: Liquid Glass">Open A</a>
+        </article></li>
+        <li><article class="card">
+          <div class="swatch" aria-hidden="true"><i style="background:#f2f2f7"></i><i style="background:#fff"></i><i style="background:#0066cc"></i></div>
+          <h2>Option B: Clean Apple Light</h2>
+          <p>Solid white cards on a light grouped background. Glass only on the bottom tab bar; the desktop sidebar is solid.</p>
+          <a class="btn" href="/options/b/" aria-label="Open Option B: Clean Apple Light">Open B</a>
+        </article></li>
+        <li><article class="card">
+          <div class="swatch" aria-hidden="true"><i style="background:#0d0d12"></i><i style="background:#1c1c21"></i><i style="background:linear-gradient(90deg,#5ab0ff,#bf8bff)"></i></div>
+          <h2>Option C: Dark Pro</h2>
+          <p>Dark by default, macOS style: a dark glass sidebar, dark grouped surfaces and vibrant accents. A light palette appears only if the system asks for light.</p>
+          <a class="btn" href="/options/c/" aria-label="Open Option C: Dark Pro">Open C</a>
+        </article></li>
+      </ul>
+
+      <div class="table-wrap">
+        <table>
+          <caption>How the options compare</caption>
+          <thead><tr><th scope="col">Option</th><th scope="col">Look</th><th scope="col">Where glass is used</th><th scope="col">Legibility and accessibility</th><th scope="col">Effort to adopt</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><a href="/options/a/">A: Liquid Glass</a></th><td>Colourful soft backdrop, rounded 20px solid cards, floating pill tab bar and floating sidebar.</td><td>Tab bar (phone) and sidebar (desktop), regular variant. Nothing else.</td><td>Passes the audit in light and dark. Text on glass uses solid colours and a high-opacity tint; solid fallback for reduced transparency and increased contrast. The backdrop adds visual noise behind the page title.</td><td>Medium: adds a backdrop layer and floating nav; the live app's header tabs are replaced.</td></tr>
+            <tr><th scope="row"><a href="/options/b/">B: Clean Apple Light</a></th><td>Quiet grouped background, flat white cards with hairlines, standard iOS bottom bar and a plain sidebar.</td><td>Bottom tab bar only (phone).</td><td>Passes the audit in light and dark. Least reliance on transparency, so the easiest to keep legible.</td><td>Low: mostly colour and layout changes; smallest change to the live styles.</td></tr>
+            <tr><th scope="row"><a href="/options/c/">C: Dark Pro</a></th><td>Dark grouped surfaces, vibrant accents, gradient bars, macOS-style sidebar attached to the edge.</td><td>Sidebar (desktop) and tab bar (phone), dark regular glass.</td><td>Passes the audit in dark and in the light fallback. Dark UI suits a data view; vibrant accents are checked against the dark surfaces.</td><td>Medium: a second palette to maintain (dark default plus light fallback).</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">All three follow the team skills: system font stack only, 17px body, open-source-style inline icons (see <code>site/options/ICONS.md</code>), 44px targets, and solid fallbacks for reduced transparency and increased contrast. The audit numbers are in <code>docs/design-options.md</code>.</p>
+    </main>
+  </div>
+</body>
+</html>
