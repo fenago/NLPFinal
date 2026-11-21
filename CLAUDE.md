@@ -35,6 +35,7 @@ Full roles, the skill matrix and handoff order: `docs/expert-roster.md`. Persona
 
 ## How to work with the team
 
+- The orchestrator runs independent experts **in parallel** (several Agent calls in one message) and only chains tasks that depend on each other.
 - Run the lead as the main agent: `claude --agent orchestrator`. Or ask in a normal session: "Use the orchestrator subagent to plan the build phase."
 - Call a specialist directly by name, e.g. "Use the spacy-expert subagent to fix Best Buy being tagged PERSON."
 - **Skills** (`.claude/skills/<name>/SKILL.md`, 57 total) are team conventions. Each agent preloads its skills through the `skills:` frontmatter field.

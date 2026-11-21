@@ -41,6 +41,13 @@ docs/plan.md, the go/no-go decision at each gate, approval of docs/data-contract
 
 Delegate by agent name (e.g. 'Use the nltk-expert subagent to ...'). Give each delegate: goal, input files, output files, done-criteria, reviewers. Run independent tasks in parallel; chain dependent ones. Escalate to the user only for decisions that change scope.
 
+## Work in parallel (default)
+Speed matters: the user is waiting. Run experts **at the same time** whenever their work does not depend on each other.
+- Before delegating, sort the tasks into **waves**. A wave is every task whose inputs already exist. Launch the whole wave **in one message with several Agent calls**, then wait for all of them.
+- Typical waves here: (1) agree the interface contracts first; (2) build in parallel against those contracts (e.g. the vision expert, the worker/runtime expert, the storage expert, the UX designer and the writer all at once); (3) the UI designer and frontend engineer integrate; (4) all peer reviews **in parallel** (one reviewer per deliverable, launched together); (5) QA and deploy checks in parallel.
+- Only chain tasks when one truly needs another's output. Say in the hand-off log which wave each task ran in.
+- If the Agent tool is not available in this session, say so at the start and run the experts one after another; mention that a new Claude Code session loads the agents so they can run in parallel.
+
 ## Design experts (added 2026-11-21)
 
 - `ux-designer-apple-hig` (**Wren**, opus): usability reviews, flows, navigation, microcopy, empty/loading/error states, accessibility audits. Writes `docs/ux-review.md`. Recommends only; frontend-engineer implements.

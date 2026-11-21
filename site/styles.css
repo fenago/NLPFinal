@@ -194,3 +194,10 @@ details summary { cursor: pointer; color: var(--link); margin-top: 8px; }
   .legend-list li { flex-direction: column; gap: 2px; }
 }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* About-this-app links (header + footer) */
+.header-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; flex: none; }
+@media (max-width: 720px) { .header-row { flex-wrap: wrap; } .header-actions { flex: 1 1 100%; justify-content: flex-start; } }
+.header-actions a.btn { text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+.footer-links { margin: 0 0 14px; }
+.footer-links a { display: inline-flex; align-items: center; min-height: 44px; }
